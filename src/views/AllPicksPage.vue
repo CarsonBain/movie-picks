@@ -88,9 +88,10 @@
               />
             </div>
             <!-- TODO: add some validation -->
+            <div class="flex items-center space-x-2 mt-8">
             <button
               :disabled="!canSubmit"
-              class="bg-black px-4 py-2 text-white mt-8 rounded"
+              class="bg-black px-4 py-2 text-white rounded"
               :class="[
                 canSubmit
                   ? 'bg-black cursor-pointer'
@@ -100,6 +101,14 @@
             >
               Add movie
             </button>
+            <button
+            @click="clearAddMovieForm()"
+            type="button"
+            class=" text-gray-700 px-4 py-2"
+            >
+              Close
+            </button>
+            </div>
           </div>
         </div>
       </form>
@@ -233,7 +242,6 @@ export default {
     return {
       movieQuery: '',
       movieQueryResults: '',
-      showSearch: false,
       showRestOfForm: false,
       showImages: true,
       movie: {
@@ -284,8 +292,12 @@ export default {
       this.movie.otherLink = '';
       this.movie.tmdbId = '';
       this.showRestOfForm = false;
+      this.movieQueryResults = '';
     },
     addMovie() {
+      if (!this.canSubmit) {
+        return;
+      }
       if (
         this.movies.some(
           (addedMovie) => addedMovie.tmdbId === this.movie.tmdbId
