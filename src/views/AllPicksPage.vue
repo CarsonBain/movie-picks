@@ -1,0 +1,290 @@
+<template>
+  <div class="mt-8 md:mt-12">
+    <h1 class="text-2xl md:text-3xl font-bold">All picks</h1>
+    <section class="mt-6">
+      <!-- Pick Submission Form -->
+      <form @submit.prevent="addMovie()" class="flex flex-col items-start mb-12">
+        <div class="flex flex-col space-y-3 w-full md:w-1/2">
+          <div class="flex flex-col w-full relative">
+            <label for="movie-title" class="mb-2"
+              >Search for a movie to add</label
+            >
+            <input
+              type="text"
+              id="movie-title"
+              v-model="movie.title"
+              placeholder="Movie title"
+              @keyup="getResult(movie.title)"
+            />
+            <div
+              v-if="movieQueryResults.length"
+              class="absolute top-full bg-white shadow-lg mt-2 rounded w-full"
+            >
+              <div
+                v-for="result in movieQueryResults"
+                :key="result.id"
+                class="w-full cursor-pointer hover:bg-gray-50 px-4 py-3 flex flex-col"
+                @click="selectMovie(result.id)"
+              >
+                <span>
+                  {{ result.title }}
+                </span>
+                <span class="text-sm text-gray-700">
+                  {{ new Date(result.release_date).getFullYear() }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            v-if="movie.year || movie.genres"
+            class="flex items-center space-x-3"
+          >
+            <div
+              class="font-semibold bg-gray-200 text-gray-900 px-1 rounded"
+              v-if="movie.year"
+            >
+              {{ movie.year }}
+            </div>
+            <div v-if="movie.genres">{{ movie.genres }}</div>
+          </div>
+          <div v-if="showRestOfForm">
+            <div class="flex items-center space-x-4">
+              <div class="flex flex-col w-1/2">
+                <label class="mb-2" for="movie-rating">Your rating</label>
+                <input
+                  v-model.trim="movie.userRating"
+                  type="number"
+                  min="1"
+                  max="10"
+                  id="movie-rating"
+                  placeholder="Out of 10"
+                />
+              </div>
+              <div class="flex flex-col w-1/2">
+                <label class="mb-2" for="movie-network">Network</label>
+                <select
+                  v-model.trim="movie.network"
+                  id="movie-network"
+                  placeholder="8.7"
+                >
+                  <option value="netflix">Netflix</option>
+                  <option value="crave">Crave</option>
+                  <option value="prime">Prime</option>
+                  <option value="disney">Disney</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+          <div class="flex flex-col" v-if="movie.network === 'other'">
+            <label class="mb-2" for="movie-other-link">Link to stream</label>
+            <input
+              v-model.trim="movie.otherLink"
+              type="text"
+              id="movie-other-link"
+              placeholder="https://www.putlocker.com"
+            />
+          </div>
+        <!-- TODO: add some validation -->
+        <button
+          :disabled="!canSubmit"
+          class="bg-black px-4 py-2 text-white mt-8 rounded"
+          :class="[
+            canSubmit
+              ? 'bg-black cursor-pointer'
+              : 'bg-gray-300 cursor-not-allowed',
+          ]"
+          type="submit"
+        >
+          Add movie
+        </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Picks Listing -->
+      <div class="mt-8">
+        <p v-if="!movies.length">There are currently no movies added :(</p>
+        <div v-else class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            v-for="movie in movies"
+            :key="movie.id"
+            class="border border-gray-100 rounded flex flex-col"
+          >
+            <div>
+              <img
+                class="rounded-t"
+                :src="`https://image.tmdb.org/t/p/w780/${movie.img}`"
+                :alt="`${movie.title} background image`"
+              />
+            </div>
+            <div class="p-6">
+              <div class="flex flex-col">
+                <span class="font-semibold md:text-lg">{{ movie.title }}</span>
+                <span>{{ movie.year }}</span>
+              </div>
+              <div class="my-1">
+                <span class="text-sm text-gray-700">{{ movie.genres }}</span>
+              </div>
+              <div class="capitalize mt-1 text-sm" v-if="movie.network !== 'other'">
+                {{ movie.network }}
+              </div>
+              <div class="mt-1 text-sm" v-else>
+                <a
+                  class="flex space-x-1 items-center"
+                  target="_blank"
+                  :href="movie.otherLink"
+                  ><span>Link</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 text-gray-800"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    />
+                  </svg>
+                </a>
+              </div>
+              <div class="text-sm flex space-x-2 items-center mt-2">
+                <div class="flex items-center space-x-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 text-gray-700"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                    />
+                  </svg>
+                  <span>{{ movie.userRating }}</span>
+                </div>
+                <div class="flex items-center space-x-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 text-gray-700"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <span>{{ movie.submittedBy }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</template>
+<script>
+import { mapState } from 'vuex';
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      movieQuery: '',
+      movieQueryResults: '',
+      showSearch: false,
+      showRestOfForm: false,
+      movie: {
+        title: '',
+        img: '',
+        genres: '',
+        year: '',
+        userRating: '',
+        network: '',
+        otherLink: '',
+        tmdbId: '',
+      },
+    };
+  },
+  computed: {
+    ...mapState({
+      userProfile: (state) => state.user.userProfile,
+      movies: (state) => state.movies,
+    }),
+    canSubmit() {
+      return this.movie.title && this.movie.userRating && this.movie.network;
+    },
+  },
+  methods: {
+    getResult(query) {
+      if (!query) {
+        this.clearAddMovieForm();
+      } else {
+        // TODO: REMOVE THIS API KEY!
+        axios
+          .get(
+            `https://api.themoviedb.org/3/search/movie?api_key=d8b2294a5a84a590d5c0f1f53619130b&query=${query}`
+          )
+          .then(
+            (response) =>
+              (this.movieQueryResults = response.data.results.slice(0, 5))
+          );
+        console.log(this.movieQueryResults);
+      }
+    },
+    clearAddMovieForm() {
+        this.movie.title = '';
+        this.movie.img = '';
+        this.movie.genres = '';
+        this.movie.year = '';
+        this.movie.userRating = '';
+        this.movie.network = '';
+        this.movie.otherLink = '';
+        this.movie.tmdbId = '';
+        this.showRestOfForm = false;
+    },
+    addMovie() {
+      if (this.movies.some(addedMovie => addedMovie.tmdbId === this.movie.tmdbId)) {
+        alert('This movie has already been added');
+        this.clearAddMovieForm();
+      } else {
+        this.$store.dispatch('addMovie', this.movie);
+        this.clearAddMovieForm();
+      }
+    },
+    selectMovie(movieId) {
+      // TODO: REMOVE THIS API KEY!
+      axios
+        .get(
+          `https://api.themoviedb.org/3/movie/${movieId}?api_key=d8b2294a5a84a590d5c0f1f53619130b`
+        )
+        .then((response) => {
+          console.log(response.data);
+          const { title, genres, release_date, backdrop_path, id } = response.data;
+          this.movie.title = title;
+          const genreNames = genres.map((genre) => {
+            return genre.name;
+          });
+          this.movie.genres = genreNames.join(', ');
+          this.movie.year = new Date(release_date).getFullYear();
+          console.log(backdrop_path);
+          this.movie.img = backdrop_path;
+          this.movie.tmdbId = id;
+        });
+
+      this.movieQueryResults = '';
+      this.showRestOfForm = true;
+    },
+  },
+};
+</script>

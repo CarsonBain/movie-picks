@@ -1,32 +1,25 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+  <div class="h-full" id="app">
+    <div class="px-8 md:px-16 text-gray-900 h-full max-w-screen-xl mx-auto">
+    <SiteNav v-if="loggedIn"></SiteNav>
     <router-view />
+    </div>
   </div>
 </template>
+<script>
+import { mapState } from 'vuex'
+import SiteNav from '@/components/SiteNav'
+export default { 
+  computed: {
+    ...mapState({
+      loggedIn: state => state.user.loggedIn
+    }),
+  },
+  components: {
+    SiteNav
+  },
+  methods: {
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
   }
 }
-</style>
+</script>
