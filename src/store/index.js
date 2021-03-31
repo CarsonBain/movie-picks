@@ -19,14 +19,13 @@ fb.moviesCollection.orderBy('createdOn', 'desc').onSnapshot(snapshot => {
   store.commit('setMovies', moviesArray)
 })
 
-
 const store = new Vuex.Store({
   state: {
     user: {
       loggedIn: false,
       userProfile: {},
     },
-    movies: []
+    movies: [],
   },
   mutations: {
     setUserProfile(state, val) {
@@ -37,7 +36,7 @@ const store = new Vuex.Store({
     },
     setMovies(state, movies) {
       state.movies = movies;
-    }
+    },
   },
   actions: {
     async login({ dispatch}, form) {
@@ -55,7 +54,8 @@ const store = new Vuex.Store({
       // fetch user profile
       try {
         const userProfile = await fb.usersCollection.doc(user.uid).get();
-        commit('setUserProfile', userProfile.data());
+        const userProfileDataWithId = {...userProfile.data(), id: user.uid};
+        commit('setUserProfile', userProfileDataWithId);
         commit('setLoggedIn', true);
       } catch(e) {
         alert(e)

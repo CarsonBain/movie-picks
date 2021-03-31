@@ -18,8 +18,5 @@ export default {
   components: {
     SiteNav
   },
-  methods: {
-
-  }
 }
 </script>

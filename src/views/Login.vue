@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col pt-48 md:pt-96 max-w-sm mx-auto">
+  <div class="flex flex-col pt-48 md:pt-72 max-w-sm mx-auto">
     <h1 class="text-center text-2xl font-bold mb-8">Sign in to your account</h1>
     <form
       @submit.prevent="login()"

@@ -89,25 +89,25 @@
             </div>
             <!-- TODO: add some validation -->
             <div class="flex items-center space-x-2 mt-8">
-            <button
-              :disabled="!canSubmit"
-              class="bg-black px-4 py-2 text-white rounded"
-              :class="[
-                canSubmit
-                  ? 'bg-black cursor-pointer'
-                  : 'bg-gray-300 cursor-not-allowed',
-              ]"
-              type="submit"
-            >
-              Add movie
-            </button>
-            <button
-            @click="clearAddMovieForm()"
-            type="button"
-            class=" text-gray-700 px-4 py-2"
-            >
-              Close
-            </button>
+              <button
+                :disabled="!canSubmit"
+                class="bg-black px-4 py-2 text-white rounded"
+                :class="[
+                  canSubmit
+                    ? 'bg-black cursor-pointer'
+                    : 'bg-gray-300 cursor-not-allowed',
+                ]"
+                type="submit"
+              >
+                Add movie
+              </button>
+              <button
+                @click="clearAddMovieForm()"
+                type="button"
+                class="text-gray-700 px-4 py-2"
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
@@ -117,32 +117,55 @@
       <div class="mt-8">
         <p v-if="!movies.length">There are currently no movies added :(</p>
         <div v-else>
-          <button
-            type="button"
-            @click="showImages = !showImages"
-            class="flex items-center space-x-1 mb-4 md:text-sm text-xs px-2 py-1 bg-gray-100 text-gray-900 rounded"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4 text-gray-700"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+          <div class="flex items-center space-x-4">
+            <button
+              type="button"
+              @click="showImages = !showImages"
+              class="flex items-center space-x-1 mb-4 md:text-sm text-xs px-2 py-1 bg-gray-100 text-gray-900 rounded"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
-              /></svg
-            ><span v-if="showImages">Hide images</span>
-            <span v-else>Show images</span>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 text-gray-700"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                /></svg
+              ><span v-if="showImages">Hide images</span>
+              <span v-else>Show images</span>
+            </button>
+            <!-- <button
+              type="button"
+              @click="filterOutMyPicks()"
+              class="flex items-center space-x-1 mb-4 md:text-sm text-xs px-2 py-1 bg-gray-100 text-gray-900 rounded"
+            >
+              <svg
+                class="h-4 w-4 text-gray-700"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                /></svg
+              ><span v-if="showMyPicks">Hide my picks</span>
+              <span v-else>Show my picks</span>
+            </button> -->
+          </div>
           <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div
               v-for="movie in movies"
               :key="movie.id"
-              class="border border-gray-100 rounded flex flex-col"
+              class="border border-gray-100 rounded flex flex-col relative"
             >
               <div v-if="showImages">
                 <img
@@ -240,10 +263,12 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      allPicks: [],
       movieQuery: '',
       movieQueryResults: '',
       showRestOfForm: false,
       showImages: true,
+      showMyPicks: true,
       movie: {
         title: '',
         img: '',
@@ -264,8 +289,21 @@ export default {
     canSubmit() {
       return this.movie.title && this.movie.userRating && this.movie.network;
     },
+    // allPicksHideMine() {
+    //   return this.movies.filter(
+    //     (movie) => movie.submittedUserId !== this.userProfile.id
+    //   );
+    // },
   },
   methods: {
+    // filterOutMyPicks() {
+    //   this.showMyPicks = !this.showMyPicks;
+    //   if (this.showMyPicks === false) {
+    //     this.allPicks = this.allPicksHideMine;
+    //   } else {
+    //     this.allPicks = this.movies;
+    //   }
+    // },
     getResult(query) {
       if (!query) {
         this.clearAddMovieForm();
@@ -294,7 +332,7 @@ export default {
       this.showRestOfForm = false;
       this.movieQueryResults = '';
     },
-    addMovie() {
+    async addMovie() {
       if (!this.canSubmit) {
         return;
       }
@@ -306,7 +344,7 @@ export default {
         alert('This movie has already been added');
         this.clearAddMovieForm();
       } else {
-        this.$store.dispatch('addMovie', this.movie);
+        await this.$store.dispatch('addMovie', this.movie);
         this.clearAddMovieForm();
       }
     },
