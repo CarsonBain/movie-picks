@@ -1,5 +1,5 @@
 <template>
-  <nav class="py-8 flex justify-between items-center border-b border-gray-100">
+  <nav class="py-8 flex justify-between items-center border-b border-gray-700">
     <div class="text-base md:text-xl uppercase tracking-wide font-extrabold">
        <router-link to="/">
         Vincent's Picks

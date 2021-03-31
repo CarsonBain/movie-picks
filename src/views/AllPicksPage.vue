@@ -174,7 +174,7 @@
               <div v-if="showImages">
                 <img
                   class="rounded-t"
-                  :src="`https://image.tmdb.org/t/p/w780/${movie.img}`"
+                  :src="`https://image.tmdb.org/t/p/w780/${movie.backdropPath}`"
                   :alt="`${movie.title} background image`"
                 />
               </div>
@@ -275,7 +275,8 @@ export default {
       showMyPicks: true,
       movie: {
         title: '',
-        img: '',
+        backdropPath: '',
+        posterPath: '',
         genres: '',
         year: '',
         userRating: '',
@@ -365,6 +366,7 @@ export default {
             genres,
             release_date,
             backdrop_path,
+            poster_path,
             id,
           } = response.data;
           this.movie.title = title;
@@ -373,8 +375,8 @@ export default {
           });
           this.movie.genres = genreNames.join(', ');
           this.movie.year = new Date(release_date).getFullYear();
-          console.log(backdrop_path);
-          this.movie.img = backdrop_path;
+          this.movie.backdropPath = backdrop_path;
+          this.movie.posterPath = poster_path;
           this.movie.tmdbId = id;
         });
 
