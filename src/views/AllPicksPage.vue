@@ -68,7 +68,7 @@
               <div class="flex flex-col w-1/2">
                 <label class="mb-2" for="movie-network">Network</label>
                 <select
-                class="bg-gray-800"
+                  class="bg-gray-800"
                   v-model.trim="movie.network"
                   id="movie-network"
                   placeholder="8.7"
@@ -84,7 +84,7 @@
             <div class="flex flex-col" v-if="movie.network === 'other'">
               <label class="mb-2" for="movie-other-link">Link to stream</label>
               <input
-              class="bg-gray-800"
+                class="bg-gray-800"
                 v-model.trim="movie.otherLink"
                 type="text"
                 id="movie-other-link"
@@ -143,27 +143,6 @@
               ><span v-if="showImages">Hide images</span>
               <span v-else>Show images</span>
             </button>
-            <!-- <button
-              type="button"
-              @click="filterOutMyPicks()"
-              class="flex items-center space-x-1 mb-4 md:text-sm text-xs px-2 py-1 bg-gray-100 text-gray-900 rounded"
-            >
-              <svg
-                class="h-4 w-4 text-gray-700"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                /></svg
-              ><span v-if="showMyPicks">Hide my picks</span>
-              <span v-else>Show my picks</span>
-            </button> -->
           </div>
           <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div
@@ -178,12 +157,48 @@
                   :alt="`${movie.title} background image`"
                 />
               </div>
-              <div class="p-6">
+              <div class="p-6 relative">
+                <!-- <button
+                  type="button"
+                  class="absolute right-4 -top-4 rounded-full p-1 bg-gray-700"
+                  @click="addMovieToWatchList(movie.id)"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    class="h-6 w-6 text-gray-50"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                    />
+                  </svg>
+                </button> -->
                 <div class="flex flex-col">
                   <span class="font-semibold md:text-lg">{{
                     movie.title
                   }}</span>
-                  <span>{{ movie.year }}</span>
+                  <div class="flex items-center space-x-2">
+                    <span>{{ movie.year }}</span>
+                    <div class="flex items-center space-x-1">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4 text-gray-300"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                        />
+                      </svg>
+
+                      <span>{{ movie.userRating }}</span>
+                    </div>
+                  </div>
                 </div>
                 <div class="my-1">
                   <span class="text-sm text-gray-300">{{ movie.genres }}</span>
@@ -217,23 +232,6 @@
                   </a>
                 </div>
                 <div class="text-sm flex space-x-2 items-center mt-2">
-                  <div class="flex items-center space-x-1">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="h-4 w-4 text-gray-300"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-                      />
-                    </svg>
-                    <span>{{ movie.userRating }}</span>
-                  </div>
                   <div class="flex items-center space-x-1">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -294,21 +292,11 @@ export default {
     canSubmit() {
       return this.movie.title && this.movie.userRating && this.movie.network;
     },
-    // allPicksHideMine() {
-    //   return this.movies.filter(
-    //     (movie) => movie.submittedUserId !== this.userProfile.id
-    //   );
-    // },
   },
   methods: {
-    // filterOutMyPicks() {
-    //   this.showMyPicks = !this.showMyPicks;
-    //   if (this.showMyPicks === false) {
-    //     this.allPicks = this.allPicksHideMine;
-    //   } else {
-    //     this.allPicks = this.movies;
-    //   }
-    // },
+    async addMovieToWatchList(movieId) {
+      await this.$store.dispatch('addMovieToWatchList', movieId);
+    },
     getResult(query) {
       if (!query) {
         this.clearAddMovieForm();
