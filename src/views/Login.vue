@@ -9,6 +9,7 @@
         <label for="user-email" class="text-left mb-1">Email</label>
         <input
           v-model="loginForm.email"
+          class="bg-gray-800"
           type="email"
           id="user-email"
           placeholder="vincent@vincentspicks.com"
@@ -18,12 +19,13 @@
         <label for="user-password" class="mb-1 text-left">Password</label>
         <input
           v-model="loginForm.password"
+          class="bg-gray-800"
           type="password"
           id="user-password"
           placeholder="••••••••"
         />
       </div>
-      <button class="bg-black text-white px-4 py-2 w-full mt-8 rounded" type="submit">Log in</button>
+      <button class="bg-gray-200 text-gray-900 px-4 py-2 w-full mt-8 rounded" type="submit">Log in</button>
     </form>
   </div>
 </template>
