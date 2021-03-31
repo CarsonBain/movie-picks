@@ -7,13 +7,14 @@
         @submit.prevent="addMovie()"
         class="flex flex-col items-start mb-12"
       >
-        <div class="flex flex-col space-y-3 w-full md:w-1/2">
+        <div class="flex flex-col space-y-4 w-full md:w-1/2">
           <div class="flex flex-col w-full relative">
             <label for="movie-title" class="mb-2"
               >Search for a movie to add</label
             >
             <input
               type="text"
+              class="bg-gray-800"
               id="movie-title"
               v-model="movie.title"
               placeholder="Movie title"
@@ -21,18 +22,18 @@
             />
             <div
               v-if="movieQueryResults.length"
-              class="absolute top-full bg-white shadow-lg mt-2 rounded w-full"
+              class="absolute top-full bg-gray-700 shadow-lg mt-2 rounded w-full z-10"
             >
               <div
                 v-for="result in movieQueryResults"
                 :key="result.id"
-                class="w-full cursor-pointer hover:bg-gray-50 px-4 py-3 flex flex-col"
+                class="w-full cursor-pointer hover:bg-gray-600 px-4 py-3 flex flex-col"
                 @click="selectMovie(result.id)"
               >
                 <span>
                   {{ result.title }}
                 </span>
-                <span class="text-sm text-gray-700">
+                <span class="text-sm text-gray-400">
                   {{ new Date(result.release_date).getFullYear() }}
                 </span>
               </div>
@@ -43,7 +44,7 @@
             class="flex items-center space-x-3"
           >
             <div
-              class="font-semibold bg-gray-200 text-gray-900 px-1 rounded"
+              class="font-semibold bg-gray-300 text-gray-900 px-1 rounded"
               v-if="movie.year"
             >
               {{ movie.year }}
@@ -51,11 +52,12 @@
             <div v-if="movie.genres">{{ movie.genres }}</div>
           </div>
           <div v-if="showRestOfForm">
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-4 mb-3">
               <div class="flex flex-col w-1/2">
                 <label class="mb-2" for="movie-rating">Your rating</label>
                 <input
                   v-model.trim="movie.userRating"
+                  class="bg-gray-800"
                   type="number"
                   min="1"
                   max="10"
@@ -66,6 +68,7 @@
               <div class="flex flex-col w-1/2">
                 <label class="mb-2" for="movie-network">Network</label>
                 <select
+                class="bg-gray-800"
                   v-model.trim="movie.network"
                   id="movie-network"
                   placeholder="8.7"
@@ -81,6 +84,7 @@
             <div class="flex flex-col" v-if="movie.network === 'other'">
               <label class="mb-2" for="movie-other-link">Link to stream</label>
               <input
+              class="bg-gray-800"
                 v-model.trim="movie.otherLink"
                 type="text"
                 id="movie-other-link"
@@ -91,11 +95,11 @@
             <div class="flex items-center space-x-2 mt-8">
               <button
                 :disabled="!canSubmit"
-                class="bg-black px-4 py-2 text-white rounded"
+                class="bg-black px-4 py-2 text-white rounded font-semibold"
                 :class="[
                   canSubmit
-                    ? 'bg-black cursor-pointer'
-                    : 'bg-gray-300 cursor-not-allowed',
+                    ? 'bg-gray-200 text-gray-900 cursor-pointer'
+                    : 'bg-gray-800 text-gray-500 cursor-not-allowed',
                 ]"
                 type="submit"
               >
@@ -104,9 +108,9 @@
               <button
                 @click="clearAddMovieForm()"
                 type="button"
-                class="text-gray-700 px-4 py-2"
+                class="text-gray-300 font-semibold px-4 py-2"
               >
-                Close
+                Close form
               </button>
             </div>
           </div>
@@ -121,7 +125,7 @@
             <button
               type="button"
               @click="showImages = !showImages"
-              class="flex items-center space-x-1 mb-4 md:text-sm text-xs px-2 py-1 bg-gray-100 text-gray-900 rounded"
+              class="flex items-center space-x-1 mb-4 md:text-sm text-xs px-2 py-1 bg-gray-200 text-gray-800 rounded"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -165,7 +169,7 @@
             <div
               v-for="movie in movies"
               :key="movie.id"
-              class="border border-gray-100 rounded flex flex-col relative"
+              class="bg-gray-800 rounded flex flex-col relative"
             >
               <div v-if="showImages">
                 <img
@@ -182,7 +186,7 @@
                   <span>{{ movie.year }}</span>
                 </div>
                 <div class="my-1">
-                  <span class="text-sm text-gray-700">{{ movie.genres }}</span>
+                  <span class="text-sm text-gray-300">{{ movie.genres }}</span>
                 </div>
                 <div
                   class="capitalize mt-1 text-sm"
@@ -198,7 +202,7 @@
                     ><span>Link</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="h-4 w-4 text-gray-800"
+                      class="h-4 w-4 text-gray-300"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -216,7 +220,7 @@
                   <div class="flex items-center space-x-1">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="h-4 w-4 text-gray-700"
+                      class="h-4 w-4 text-gray-300"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -233,7 +237,7 @@
                   <div class="flex items-center space-x-1">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="h-4 w-4 text-gray-700"
+                      class="h-4 w-4 text-gray-300"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
