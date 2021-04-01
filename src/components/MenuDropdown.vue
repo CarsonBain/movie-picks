@@ -6,7 +6,6 @@
     <transition>
       <div
         v-if="showMenu"
-        tabindex="0"
         class="origin-top-right absolute right-0 mt-1 w-48 px-4 py-4 rounded-md shadow-lg bg-gray-700 ring-1 ring-black ring-opacity-5 focus:outline-ring-5 z-10"
       >
         <slot></slot>

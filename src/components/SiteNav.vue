@@ -14,7 +14,6 @@
       <transition>
         <div
           v-if="showUserMenu"
-          tabindex="0"
           class="origin-top-right absolute right-0 mt-2 w-48 px-4 py-4 rounded-md shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-ring-5 z-10"
         >
           <ul class="flex flex-col space-y-2">
