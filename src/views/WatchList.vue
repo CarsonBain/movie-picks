@@ -40,7 +40,7 @@ export default {
     },
   },
   async mounted() {
-      this.$store.dispatch('getWatchList');
+      await this.$store.dispatch('getWatchList');
   },
 };
 </script>
