@@ -92,7 +92,6 @@ const store = new Vuex.Store({
       }
     },
     async removeMovieFromWatchList( {state}, movieId) {
-
       try {
         await state.watchList.forEach(watchItem => {
           if (watchItem.movie_id === movieId) {
@@ -125,6 +124,15 @@ const store = new Vuex.Store({
         alert(e);
       }
     },
+    async deleteMovie({dispatch}, movieId) {
+      try {
+        await fb.moviesCollection.doc(movieId).delete().then(() => {
+          dispatch('removeMovieFromWatchList', movieId); 
+        })
+      } catch(e) {
+        alert(e);
+      }
+    }
   },
   modules: {},
 });

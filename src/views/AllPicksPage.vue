@@ -223,6 +223,10 @@ export default {
       movies: (state) => state.movies,
     }),
     canSubmit() {
+      const choseOtherNetwork = this.movie.network === 'other'
+      if (choseOtherNetwork) {
+        return this.movie.title && this.movie.userRating && this.movie.network && this.movie.otherLinkn
+      }
       return this.movie.title && this.movie.userRating && this.movie.network;
     },
     genreList() {
