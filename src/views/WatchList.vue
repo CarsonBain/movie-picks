@@ -56,6 +56,7 @@ export default {
       movies: (state) => state.movies,
     }),
     moviesToWatch() {
+      // TODO: need to sort this by date added to watchlist
       const watchListIds = this.watchList.map(
         (watchItem) => watchItem.movie_id
       );
@@ -63,9 +64,6 @@ export default {
         return watchListIds.includes(movie.id);
       });
     },
-  },
-  async mounted() {
-    await this.$store.dispatch('getWatchList');
   },
 };
 </script>

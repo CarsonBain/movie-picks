@@ -14,6 +14,14 @@ const store = new Vuex.Store({
     movies: [],
     watchList: []
   },
+  getters: {
+    movieExistsInWatchList: (state) => (movieId) => {
+     const watchListIds = state.watchList.map(
+        (watchItem) => watchItem.movie_id
+      );
+        return watchListIds.includes(movieId);
+    }
+  },
   mutations: {
     setUserProfile(state, val) {
       state.user.userProfile = val;
@@ -62,17 +70,34 @@ const store = new Vuex.Store({
         let watchList = [];
         snapshot.forEach(doc => {
           let movie = doc.data();
+          movie.id = doc.id;
           watchList.push(movie)
         })
         store.commit('setWatchList', watchList)
       })      
     },
     async addMovieToWatchList({ state }, movieId) {
+      // Dont add the same item to watchlist twice
+      if (state.watchList.some(watchItem => watchItem.movie_id === movieId)) {
+        return;
+      }
       try {
         await fb.watchListsCollection.add({
           user_id : state.user.userProfile.id,
           movie_id: movieId,
           created_on: new Date()
+        })
+      } catch(e) {
+        alert(e);
+      }
+    },
+    async removeMovieFromWatchList( {state}, movieId) {
+
+      try {
+        await state.watchList.forEach(watchItem => {
+          if (watchItem.movie_id === movieId) {
+            fb.watchListsCollection.doc(watchItem.id).delete();
+          }
         })
       } catch(e) {
         alert(e);

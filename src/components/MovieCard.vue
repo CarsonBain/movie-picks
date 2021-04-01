@@ -9,39 +9,7 @@
     </div>
     <div class="p-6 relative">
       <div class="absolute right-4 -top-4">
-        <MenuDropdown
-          :buttonClasses="'rounded-full p-1 bg-gray-700 focus:outline-none focus:ring-1 focus:ring-gray-500'"
-        >
-          <template #button>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              class="h-6 w-6 text-gray-50"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-              />
-            </svg>
-          </template>
-          <template>
-            <ul class="flex flex-col space-y-2">
-              <li>
-                <button
-                  type="button"
-                  class
-                  @click="addMovieToWatchList(movie.id)"
-                >
-                  Add to my watchlist
-                </button>
-              </li>
-            </ul>
-          </template>
-        </MenuDropdown>
+        <MovieCardMenuDropdown :movie="movie"> </MovieCardMenuDropdown>
       </div>
 
       <div class="flex flex-col">
@@ -121,14 +89,11 @@
   </div>
 </template>
 <script>
-import MenuDropdown from './MenuDropdown.vue';
+import MovieCardMenuDropdown from './MovieCardMenuDropdown.vue';
 export default {
-  components: { MenuDropdown },
+  components: { MovieCardMenuDropdown },
   props: ['movie', 'showImages'],
-  methods: {
-    async addMovieToWatchList(movieId) {
-      await this.$store.dispatch('addMovieToWatchList', movieId);
-    },
-  },
+
+  methods: {},
 };
 </script>

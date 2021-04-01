@@ -20,5 +20,8 @@ export default {
   components: {
     SiteNav,
   },
+  async mounted() {
+    await this.$store.dispatch('getWatchList');
+  },
 };
 </script>
