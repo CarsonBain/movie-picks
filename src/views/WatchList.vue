@@ -40,9 +40,7 @@ export default {
     },
   },
   async mounted() {
-    setTimeout(() => {
       this.$store.dispatch('getWatchList');
-    }, 1000);
   },
 };
 </script>
