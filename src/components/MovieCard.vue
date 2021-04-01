@@ -9,7 +9,9 @@
     </div>
     <div class="p-6 relative">
       <div class="absolute right-4 -top-4">
-        <MenuDropdown :buttonClasses="'rounded-full p-1 bg-gray-700 focus:outline-none focus:ring-1 focus:ring-gray-500'">
+        <MenuDropdown
+          :buttonClasses="'rounded-full p-1 bg-gray-700 focus:outline-none focus:ring-1 focus:ring-gray-500'"
+        >
           <template #button>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -62,8 +64,14 @@
           </div>
         </div>
       </div>
-      <div class="my-1">
-        <span class="text-sm text-gray-300">{{ movie.genres }}</span>
+      <div v-if="movie.genres" class="my-1">
+        <span
+          v-for="(genre, index) in movie.genres"
+          :key="genre.id"
+          class="text-sm text-gray-300"
+          ><span>{{ genre.name }}</span
+          ><span v-if="index + 1 < movie.genres.length">, </span></span
+        >
       </div>
       <div class="capitalize mt-1 text-sm" v-if="movie.network !== 'other'">
         {{ movie.network }}

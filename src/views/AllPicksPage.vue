@@ -49,7 +49,12 @@
             >
               {{ movie.year }}
             </div>
-            <div v-if="movie.genres">{{ movie.genres }}</div>
+            <div v-if="movie.genres">
+              <span v-for="(genre, index) in movie.genres" :key="genre.id"
+                ><span>{{ genre.name }}</span
+                ><span v-if="index + 1 < movie.genres.length">, </span></span
+              >
+            </div>
           </div>
           <div v-if="showRestOfForm">
             <div class="flex items-center space-x-4 mb-3">
@@ -278,9 +283,9 @@ export default {
     // TODO: this doesn't work yet
     setActiveFilter(filterName) {
       this.activeGenreFilter = filterName;
-      this.movies = this.movies.filter(movie => {
+      this.movies = this.movies.filter((movie) => {
         return movie.genres.includes(filterName);
-      })
+      });
     },
     selectMovie(movieId) {
       // TODO: REMOVE THIS API KEY!
@@ -299,10 +304,7 @@ export default {
             id,
           } = response.data;
           this.movie.title = title;
-          const genreNames = genres.map((genre) => {
-            return genre.name;
-          });
-          this.movie.genres = genreNames.join(', ');
+          this.movie.genres = genres;
           this.movie.year = new Date(release_date).getFullYear();
           this.movie.backdropPath = backdrop_path;
           this.movie.posterPath = poster_path;
