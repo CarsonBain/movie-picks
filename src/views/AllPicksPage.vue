@@ -144,8 +144,39 @@
               <span v-else>Show images</span>
             </button>
           </div>
+
+          <!-- Genre filtering -->
+          <div class="flex items-center space-x-3 my-4 overflow-x-auto">
+            <button
+              type="button"
+              @click="setActiveFilter('All')"
+              :class="[
+                activeGenreFilter === 'All' ? 'bg-gray-200 text-gray-900' : '',
+              ]"
+              class="border-gray-200 border rounded px-2 flex-shrink-0"
+            >
+              All
+            </button>
+            <button
+              type="button"
+              @click="setActiveFilter(genre)"
+              :class="[
+                activeGenreFilter === genre ? 'bg-gray-200 text-gray-900' : '',
+              ]"
+              class="border-gray-200 border rounded px-2 flex-shrink-0"
+              v-for="(genre, index) in genreList"
+              :key="index"
+            >
+              {{ genre }}
+            </button>
+          </div>
           <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <MovieCard v-for="movie in movies" :movie="movie" :showImages="showImages" :key="movie.id"></MovieCard>
+            <MovieCard
+              v-for="movie in movies"
+              :movie="movie"
+              :showImages="showImages"
+              :key="movie.id"
+            ></MovieCard>
           </div>
         </div>
       </div>
@@ -158,10 +189,10 @@ import axios from 'axios';
 import MovieCard from '../components/MovieCard.vue';
 
 export default {
-  components: {MovieCard},
+  components: { MovieCard },
   data() {
     return {
-      allPicks: [],
+      activeGenreFilter: 'All',
       movieQuery: '',
       movieQueryResults: '',
       showRestOfForm: false,
@@ -188,6 +219,16 @@ export default {
     canSubmit() {
       return this.movie.title && this.movie.userRating && this.movie.network;
     },
+    genreList() {
+      const genres = [];
+      this.movies.forEach((movie) => {
+        let genresAsArray = movie.genres.split(', ');
+        genresAsArray.forEach((genre) => {
+          genres.push(genre);
+        });
+      });
+      return [...new Set(genres)];
+    },
   },
   methods: {
     getResult(query) {
@@ -203,7 +244,6 @@ export default {
             (response) =>
               (this.movieQueryResults = response.data.results.slice(0, 5))
           );
-        console.log(this.movieQueryResults);
       }
     },
     clearAddMovieForm() {
@@ -233,6 +273,13 @@ export default {
         await this.$store.dispatch('addMovie', this.movie);
         this.clearAddMovieForm();
       }
+    },
+    // TODO: this doesn't work yet
+    setActiveFilter(filterName) {
+      this.activeGenreFilter = filterName;
+      this.movies = this.movies.filter(movie => {
+        return movie.genres.includes(filterName);
+      })
     },
     selectMovie(movieId) {
       // TODO: REMOVE THIS API KEY!
