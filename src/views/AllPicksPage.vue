@@ -146,7 +146,8 @@
           </div>
 
           <!-- Genre filtering -->
-          <div class="flex items-center space-x-3 my-4 overflow-x-auto">
+          <!-- TODO: add back when grid is fixed -->
+          <!-- <div class="flex items-center space-x-3 my-4 overflow-x-auto">
             <button
               type="button"
               @click="setActiveFilter('All')"
@@ -169,7 +170,7 @@
             >
               {{ genre }}
             </button>
-          </div>
+          </div> -->
           <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <MovieCard
               v-for="movie in movies"
