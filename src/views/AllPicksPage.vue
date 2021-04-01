@@ -125,11 +125,11 @@
             <button
               type="button"
               @click="showImages = !showImages"
-              class="flex items-center space-x-1 mb-4 md:text-sm text-xs px-2 py-1 bg-gray-200 text-gray-800 rounded"
+              class="flex items-center space-x-1 mb-4 md:text-sm text-xs px-2 py-1 text-gray-300 underline focus:outline-none focus:ring-1 rounded"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4 text-gray-700"
+                class="h-4 w-4 text-gray-300"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
