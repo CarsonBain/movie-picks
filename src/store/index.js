@@ -5,20 +5,6 @@ import router from '@/router/index'
 
 Vue.use(Vuex);
 
-// realtime firebase connection
-fb.moviesCollection.orderBy('createdOn', 'desc').onSnapshot(snapshot => {
-  let moviesArray = [];
-
-  snapshot.forEach(doc => {
-    let movie = doc.data();
-    movie.id = doc.id;
-
-    moviesArray.push(movie)
-  })
-
-  store.commit('setMovies', moviesArray)
-})
-
 const store = new Vuex.Store({
   state: {
     user: {
@@ -26,6 +12,7 @@ const store = new Vuex.Store({
       userProfile: {},
     },
     movies: [],
+    watchList: []
   },
   mutations: {
     setUserProfile(state, val) {
@@ -37,6 +24,9 @@ const store = new Vuex.Store({
     setMovies(state, movies) {
       state.movies = movies;
     },
+    setWatchList(state, watchList) {
+      state.watchList = watchList;
+    }
   },
   actions: {
     async login({ dispatch}, form) {
@@ -67,6 +57,27 @@ const store = new Vuex.Store({
       commit('setLoggedIn', false);
       router.push('/login');
     },
+    async getWatchList() {
+      fb.watchListsCollection.where('user_id', '==', fb.auth.currentUser.uid).orderBy('created_on', 'desc').onSnapshot(snapshot => {
+        let watchList = [];
+        snapshot.forEach(doc => {
+          let movie = doc.data();
+          watchList.push(movie)
+        })
+        store.commit('setWatchList', watchList)
+      })      
+    },
+    async addMovieToWatchList({ state }, movieId) {
+      try {
+        await fb.watchListsCollection.add({
+          user_id : state.user.userProfile.id,
+          movie_id: movieId,
+          created_on: new Date()
+        })
+      } catch(e) {
+        alert(e);
+      }
+    },
     async addMovie({ state }, movie) {
       try {
         await fb.moviesCollection.add({
@@ -88,9 +99,23 @@ const store = new Vuex.Store({
       } catch(e) {
         alert(e);
       }
-    } 
+    },
   },
   modules: {},
 });
+
+// realtime firebase connection
+fb.moviesCollection.orderBy('createdOn', 'desc').onSnapshot(snapshot => {
+  let moviesArray = [];
+
+  snapshot.forEach(doc => {
+    let movie = doc.data();
+    movie.id = doc.id;
+
+    moviesArray.push(movie)
+  })
+  store.commit('setMovies', moviesArray)
+})
+
 
 export default store;
