@@ -4,6 +4,9 @@ import router from "./router";
 import store from "./store";
 import "./assets/styles/base.css";
 import { auth } from './firebase'
+import Toasted from 'vue-toasted';
+ 
+Vue.use(Toasted, {singleton: true, router})
 
 Vue.config.productionTip = false;
 

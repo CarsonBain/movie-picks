@@ -66,15 +66,17 @@ const store = new Vuex.Store({
       router.push('/login');
     },
     async getWatchList() {
-      fb.watchListsCollection.where('user_id', '==', fb.auth.currentUser.uid).orderBy('created_on', 'desc').onSnapshot(snapshot => {
-        let watchList = [];
-        snapshot.forEach(doc => {
-          let movie = doc.data();
-          movie.id = doc.id;
-          watchList.push(movie)
-        })
-        store.commit('setWatchList', watchList)
-      })      
+      if (fb.auth.currentUser) {
+        fb.watchListsCollection.where('user_id', '==', fb.auth.currentUser.uid).orderBy('created_on', 'desc').onSnapshot(snapshot => {
+          let watchList = [];
+          snapshot.forEach(doc => {
+            let movie = doc.data();
+            movie.id = doc.id;
+            watchList.push(movie)
+          })
+          store.commit('setWatchList', watchList)
+        })      
+      }
     },
     async addMovieToWatchList({ state }, movieId) {
       // Dont add the same item to watchlist twice
