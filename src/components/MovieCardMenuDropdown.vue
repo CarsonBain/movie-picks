@@ -161,6 +161,19 @@ export default {
     async deleteMovie(movieId) {
       this.hideMenu();
       await this.$store.dispatch('deleteMovie', movieId);
+      this.$toasted.show('Movie removed!', {
+        duration: 2000,
+        position: 'bottom-center',
+        className: [
+          'shadow-lg',
+          'rounded',
+          'bg-red-100',
+          'py-4',
+          'text-red-900',
+          'font-semibold',
+        ],
+        containerClass: ['w-10/12', 'lg:w-max'],
+      });
     },
   },
   directives: {

@@ -225,7 +225,7 @@ export default {
     canSubmit() {
       const choseOtherNetwork = this.movie.network === 'other'
       if (choseOtherNetwork) {
-        return this.movie.title && this.movie.userRating && this.movie.network && this.movie.otherLinkn
+        return this.movie.title && this.movie.userRating && this.movie.network && this.movie.otherLink
       }
       return this.movie.title && this.movie.userRating && this.movie.network;
     },
