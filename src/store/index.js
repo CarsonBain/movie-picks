@@ -20,6 +20,13 @@ const store = new Vuex.Store({
         (watchItem) => watchItem.movie_id
       );
         return watchListIds.includes(movieId);
+    },
+    currentUserSubmittedMovie: (state) => (movieId) => {
+      const foundMovie = state.movies.find(movie => movie.id === movieId);
+      if (foundMovie.submittedUserId === fb.auth.currentUser.uid) {
+        return true;
+      }
+      return false;
     }
   },
   mutations: {

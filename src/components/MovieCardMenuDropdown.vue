@@ -72,7 +72,8 @@
               <span> Add to my watchlist </span>
             </button>
           </li>
-          <li>
+            <!-- Can't delete a pick unless you are the user that submitted it -->
+          <li v-if="currentUserSubmittedMovie(movie.id)">
             <button
               type="button"
               class="flex items-center space-x-2 focus:outline-none focus:ring-1 focus:ring-gray-600 text-red-300"
@@ -110,6 +111,9 @@ export default {
   methods: {
     hideMenu() {
       this.showMenu = false;
+    },
+    currentUserSubmittedMovie(movieId) {
+      return this.$store.getters.currentUserSubmittedMovie(movieId);
     },
     async addMovieToWatchList(movieId) {
       this.hideMenu();
