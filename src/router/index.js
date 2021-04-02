@@ -22,7 +22,10 @@ const routes = [
   {
     path: '/watchlist',
     name: 'watchlist',
-    component: () => import(/* webpackChunkName: "watchList" */ '../views/WatchList.vue')
+    component: () => import(/* webpackChunkName: "watchList" */ '../views/WatchList.vue'),
+    meta: {
+      requiresAuth: true
+    }
   },
 ];
 
