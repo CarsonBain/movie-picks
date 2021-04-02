@@ -152,7 +152,7 @@ export default {
           'text-green-900',
           'font-semibold',
         ],
-        containerClass: ['w-10/12', 'md:w-max'],
+        containerClass: ['w-10/12', 'lg:w-max'],
       });
     },
     movieExistsInWatchList(movieId) {
