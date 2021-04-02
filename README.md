@@ -1,4 +1,4 @@
-# movie-picks
+# vincents-picks
 
 ## Project setup
 ```
