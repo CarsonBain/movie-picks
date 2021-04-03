@@ -4,13 +4,12 @@ import 'firebase/firestore';
 
 // firebase init - add your own config here
 const firebaseConfig = {
-  apiKey: 'AIzaSyAY21lIu2b5ku4hmQ3UZl6qWedkJZq48d4',
-  authDomain: 'chungus-picks.firebaseapp.com',
-  databaseURL: 'https://chungus-picks-default-rtdb.firebaseio.com',
-  projectId: 'chungus-picks',
-  storageBucket: 'chungus-picks.appspot.com',
-  messagingSenderId: '57856530922',
-  appId: '1:57856530922:web:c65ed558a966eea29f3a93',
+  apiKey: process.env.VUE_APP_FB_API_KEY,
+  authDomain: process.env.VUE_APP_FB_AUTHDOMAIN,
+  projectId: process.env.VUE_APP_FB_PROJECT_ID,
+  storageBucket: process.env.VUE_APP_FB_STORAGE_BUCKET,
+  messagingSenderId: process.env.VUE_APP_FB_MESSAGING_SENDER_ID,
+  appId: process.env.VUE_APP_FB_APP_ID,
 };
 firebase.initializeApp(firebaseConfig);
 
