@@ -151,7 +151,7 @@ const toastSettings = {
           'shadow-lg',
           'rounded',
           'bg-green-100',
-          'py-2',
+          'py-4',
           'text-green-900',
           'font-semibold',
         ],
