@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-8 md:mt-12 px-8 md:px-16">
+  <div class="mt-8 md:mt-12 px-6 md:px-16">
     <h1 class="text-2xl md:text-3xl font-bold">{{ userName }}'s seen list</h1>
     <section class="mt-6">
       <div class="mt-8">

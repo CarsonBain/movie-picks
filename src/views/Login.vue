@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col pt-36 md:pt-72 max-w-sm mx-auto">
+  <div class="flex flex-col pt-36 md:pt-72 max-w-sm mx-auto px-6">
     <h1 class="text-center text-lg uppercase tracking-wider font-bold mb-4 text-gray-100">Vincent's Picks</h1>
     <h2 class="text-center text-3xl font-bold mb-8">Sign in to your account</h2>
     <form

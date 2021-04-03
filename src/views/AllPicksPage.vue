@@ -1,11 +1,11 @@
 <template>
   <div class="mt-8 md:mt-12">
-    <h1 class="text-2xl md:text-3xl font-bold px-8 md:px-16">All picks</h1>
+    <h1 class="text-2xl md:text-3xl font-bold px-6 md:px-16">All picks</h1>
     <section class="mt-6">
       <!-- Pick Submission Form -->
       <form
         @submit.prevent="addMovie()"
-        class="flex flex-col items-start mb-8 px-8 md:px-16 "
+        class="flex flex-col items-start mb-8 px-6 md:px-16 "
       >
         <div class="flex flex-col space-y-4 w-full md:w-1/2">
           <div class="flex flex-col w-full relative">
@@ -125,7 +125,7 @@
       <!-- Picks Listing -->
       <div class="mt-8">
         <div
-          class="flex flex-col items-center mx-auto mt-16 max-w-lg px-8 md:px-16 "
+          class="flex flex-col items-center mx-auto mt-16 max-w-lg px-6 md:px-16 "
         v-if="!$store.getters.allPicksWithoutSeenMovies(currentFilter).length"
         >
           <p class="text-center text-xl font-semibold">
@@ -133,7 +133,7 @@
           </p>
           </div>
         <div v-else>
-          <div class="flex items-center space-x-4 px-8 md:px-16 ">
+          <div class="flex items-center space-x-4 px-6 md:px-16">
             <button
               type="button"
               @click="showImages = !showImages"
@@ -182,7 +182,7 @@
               {{ genre }}
             </button>
           </div>
-          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 px-8 md:px-16">
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 px-6 md:px-16">
             <MovieCard
               v-for="movie in $store.getters.allPicksWithoutSeenMovies(currentFilter)"
               :movie="movie"

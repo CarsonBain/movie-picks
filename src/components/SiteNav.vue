@@ -1,6 +1,6 @@
 <template>
 <div class="border-b border-gray-700">
-  <nav class="py-6 md:py-8 px-8 md:px-16 flex justify-between items-center max-w-screen-xl mx-auto">
+  <nav class="py-6 md:py-8 px-6 md:px-16 flex justify-between items-center max-w-screen-xl mx-auto">
     <div class="text-base md:text-xl uppercase tracking-wider font-extrabold">
       <router-link to="/">Vincent's Picks</router-link>
     </div>
