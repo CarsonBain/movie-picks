@@ -35,8 +35,18 @@ const store = new Vuex.Store({
       }
       return false;
     },
-    allPicksWithoutSeenMovies: (state, getters) => {
-      return state.movies.filter(movie => !getters.movieExistsInSeenList(movie.id))
+    allPicksWithoutSeenMovies: (state, getters) => (filter = null) => {
+      let allPicksWithoutSeenMovies = state.movies.filter(movie => !getters.movieExistsInSeenList(movie.id));
+      if (filter) {
+        allPicksWithoutSeenMovies = allPicksWithoutSeenMovies.filter((movie) => {
+              return movie.genres.some(genre => {
+console.log(genre)
+console.log(filter);
+                return genre.name === filter
+              });
+            });
+      }
+      return allPicksWithoutSeenMovies
     }
   },
   mutations: {

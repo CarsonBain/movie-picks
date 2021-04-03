@@ -1,11 +1,11 @@
 <template>
   <div class="mt-8 md:mt-12">
-    <h1 class="text-2xl md:text-3xl font-bold">All picks</h1>
+    <h1 class="text-2xl md:text-3xl font-bold px-8 md:px-16">All picks</h1>
     <section class="mt-6">
       <!-- Pick Submission Form -->
       <form
         @submit.prevent="addMovie()"
-        class="flex flex-col items-start mb-12"
+        class="flex flex-col items-start mb-8 px-8 md:px-16 "
       >
         <div class="flex flex-col space-y-4 w-full md:w-1/2">
           <div class="flex flex-col w-full relative">
@@ -125,19 +125,19 @@
       <!-- Picks Listing -->
       <div class="mt-8">
         <div
-          class="flex flex-col items-center mx-auto mt-16 max-w-lg"
-        v-if="!$store.getters.allPicksWithoutSeenMovies.length"
+          class="flex flex-col items-center mx-auto mt-16 max-w-lg px-8 md:px-16 "
+        v-if="!$store.getters.allPicksWithoutSeenMovies(currentFilter).length"
         >
           <p class="text-center text-xl font-semibold">
             There are no current picks :(
           </p>
           </div>
         <div v-else>
-          <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-4 px-8 md:px-16 ">
             <button
               type="button"
               @click="showImages = !showImages"
-              class="flex items-center space-x-1 mb-4 md:text-sm text-xs px-2 py-1 text-gray-300 underline focus:outline-none focus:ring-1 rounded"
+              class="flex items-center space-x-1 md:text-sm text-xs p-2 text-gray-300 underline focus:outline-none focus:ring-1 rounded"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -158,13 +158,12 @@
           </div>
 
           <!-- Genre filtering -->
-          <!-- TODO: add back when grid is fixed -->
-          <!-- <div class="flex items-center space-x-3 my-4 overflow-x-auto">
+          <div class="flex items-center space-x-3 py-4 mb-4 overflow-x-auto pl-8 md:pl-16">
             <button
               type="button"
-              @click="setActiveFilter('All')"
+              @click="currentFilter = ''"
               :class="[
-                activeGenreFilter === 'All' ? 'bg-gray-200 text-gray-900' : '',
+                currentFilter === '' ? 'bg-gray-200 text-gray-900' : '',
               ]"
               class="border-gray-200 border rounded px-2 flex-shrink-0"
             >
@@ -172,20 +171,20 @@
             </button>
             <button
               type="button"
-              @click="setActiveFilter(genre)"
+              @click="currentFilter = genre"
               :class="[
-                activeGenreFilter === genre ? 'bg-gray-200 text-gray-900' : '',
+                currentFilter === genre ? 'bg-gray-200 text-gray-900' : '',
               ]"
-              class="border-gray-200 border rounded px-2 flex-shrink-0"
+              class="border-gray-200 border rounded px-2 flex-shrink-0 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-gray-800 focus:ring-white"
               v-for="(genre, index) in genreList"
               :key="index"
             >
               {{ genre }}
             </button>
-          </div> -->
-          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          </div>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 px-8 md:px-16">
             <MovieCard
-              v-for="movie in $store.getters.allPicksWithoutSeenMovies"
+              v-for="movie in $store.getters.allPicksWithoutSeenMovies(currentFilter)"
               :movie="movie"
               :showImages="showImages"
               :key="movie.id"
@@ -205,7 +204,7 @@ export default {
   components: { MovieCard },
   data() {
     return {
-      activeGenreFilter: 'All',
+      currentFilter: '',
       movieQuery: '',
       movieQueryResults: '',
       showRestOfForm: false,
@@ -237,14 +236,13 @@ export default {
       return this.movie.title && this.movie.userRating && this.movie.network;
     },
     genreList() {
-      const genres = [];
-      this.movies.forEach((movie) => {
-        let genresAsArray = movie.genres.split(', ');
-        genresAsArray.forEach((genre) => {
-          genres.push(genre);
+      const genreNames = [];
+      this.$store.getters.allPicksWithoutSeenMovies('').forEach((movie) => {
+        movie.genres.forEach((genre) => {
+          genreNames.push(genre.name);
         });
       });
-      return [...new Set(genres)];
+      return [...new Set(genreNames)];
     },
   },
   methods: {
@@ -290,13 +288,7 @@ export default {
         this.clearAddMovieForm();
       }
     },
-    // TODO: this doesn't work yet
-    // setActiveFilter(filterName) {
-    //   this.activeGenreFilter = filterName;
-    //   this.movies = this.movies.filter((movie) => {
-    //     return movie.genres.includes(filterName);
-    //   });
-    // },
+   
     selectMovie(movieId) {
       axios
         .get(
