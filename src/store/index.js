@@ -12,7 +12,8 @@ const store = new Vuex.Store({
       userProfile: {},
     },
     movies: [],
-    watchList: []
+    watchList: [],
+    seenList: []
   },
   getters: {
     movieExistsInWatchList: (state) => (movieId) => {
@@ -21,12 +22,21 @@ const store = new Vuex.Store({
       );
         return watchListIds.includes(movieId);
     },
+    movieExistsInSeenList: (state) => (movieId) => {
+      const seenListIds = state.seenList.map(
+         (seenItem) => seenItem.movie_id
+       );
+         return seenListIds.includes(movieId);
+     },
     currentUserSubmittedMovie: (state) => (movieId) => {
       const foundMovie = state.movies.find(movie => movie.id === movieId);
       if (foundMovie.submittedUserId === fb.auth.currentUser.uid) {
         return true;
       }
       return false;
+    },
+    allPicksWithoutSeenMovies: (state, getters) => {
+      return state.movies.filter(movie => !getters.movieExistsInSeenList(movie.id))
     }
   },
   mutations: {
@@ -41,6 +51,9 @@ const store = new Vuex.Store({
     },
     setWatchList(state, watchList) {
       state.watchList = watchList;
+    },
+    setSeenList(state, seenList) {
+      state.seenList = seenList;
     }
   },
   actions: {
@@ -85,7 +98,7 @@ const store = new Vuex.Store({
         })      
       }
     },
-    async addMovieToWatchList({ state }, movieId) {
+    async addMovieToWatchList({ state, dispatch }, movieId) {
       // Dont add the same item to watchlist twice
       if (state.watchList.some(watchItem => watchItem.movie_id === movieId)) {
         return;
@@ -96,6 +109,7 @@ const store = new Vuex.Store({
           movie_id: movieId,
           created_on: new Date()
         })
+        await dispatch('removeMovieFromSeenList', movieId); 
       } catch(e) {
         alert(e);
       }
@@ -105,6 +119,47 @@ const store = new Vuex.Store({
         await state.watchList.forEach(watchItem => {
           if (watchItem.movie_id === movieId) {
             fb.watchListsCollection.doc(watchItem.id).delete();
+          }
+        })
+      } catch(e) {
+        alert(e);
+      }
+    },
+    async getSeenList() {
+      if (fb.auth.currentUser) {
+        fb.seenListsCollection.where('user_id', '==', fb.auth.currentUser.uid).orderBy('created_on', 'desc').onSnapshot(snapshot => {
+          let seenList = [];
+          snapshot.forEach(doc => {
+            let movie = doc.data();
+            movie.id = doc.id;
+            seenList.push(movie)
+          })
+          store.commit('setSeenList', seenList)
+        })      
+      }
+    },
+    async addMovieToSeenList({ state, dispatch }, movieId) {
+      // Dont add the same item to seenList twice
+      if (state.seenList.some(seenItem => seenItem.movie_id === movieId)) {
+        return;
+      }
+      try {
+        await fb.seenListsCollection.add({
+          user_id : state.user.userProfile.id,
+          movie_id: movieId,
+          created_on: new Date()
+        })
+        await dispatch('removeMovieFromWatchList', movieId); 
+      } catch(e) {
+        alert(e);
+      }
+      
+    },
+    async removeMovieFromSeenList( {state}, movieId) {
+      try {
+        await state.seenList.forEach(seenItem => {
+          if (seenItem.movie_id === movieId) {
+            fb.seenListsCollection.doc(seenItem.id).delete();
           }
         })
       } catch(e) {

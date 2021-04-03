@@ -24,8 +24,8 @@
         v-if="showMenu"
         class="origin-top-right absolute right-0 mt-1 w-52 px-4 py-4 rounded-md shadow-lg bg-gray-700 ring-1 ring-black ring-opacity-5 focus:outline-ring-5 z-10"
       >
-        <ul class="flex flex-col space-y-3 text-sm">
-          <li>
+        <ul class="flex flex-col space-y-2 text-sm">
+          <li class="py-1">
             <button
               v-if="movieExistsInWatchList(movie.id)"
               class="flex items-center space-x-2 focus:outline-none focus:ring-1 focus:ring-gray-600"
@@ -47,7 +47,7 @@
                   d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z"
                 />
               </svg>
-              <span> Remove from watchlist </span>
+              <span> Remove from watch list </span>
             </button>
 
             <button
@@ -72,8 +72,50 @@
               <span> Add to my watchlist </span>
             </button>
           </li>
-            <!-- Can't delete a pick unless you are the user that submitted it -->
-          <li v-if="currentUserSubmittedMovie(movie.id)">
+          <li class="py-1">
+            <button
+              v-if="movieExistsInSeenList(movie.id)"
+              type="button"
+              class="flex items-center space-x-2 focus:outline-none focus:ring-1 focus:ring-gray-600"
+              @click="removeMovieFromSeenList(movie.id)"
+            >
+              <svg
+                class="h-3 w-3"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <span> Remove from seen list </span>
+            </button>
+            <button
+              v-else
+              type="button"
+              class="flex items-center space-x-2 focus:outline-none focus:ring-1 focus:ring-gray-600"
+              @click="addMovieToSeenList(movie.id)"
+            >
+              <svg
+                class="h-3 w-3"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <span> Seen it </span>
+            </button>
+          </li>
+          <!-- Can't delete a pick unless you are the user that submitted it -->
+          <li class="py-1" v-if="currentUserSubmittedMovie(movie.id)">
             <button
               type="button"
               class="flex items-center space-x-2 focus:outline-none focus:ring-1 focus:ring-gray-600 text-red-300"
@@ -101,6 +143,21 @@
 </template>
 <script>
 import ClickOutside from 'vue-click-outside';
+
+const toastSettings = {
+        duration: 2000,
+        position: 'bottom-center',
+        className: [
+          'shadow-lg',
+          'rounded',
+          'bg-green-100',
+          'py-2',
+          'text-green-900',
+          'font-semibold',
+        ],
+        containerClass: ['w-10/12', 'lg:w-max'],
+      }
+
 export default {
   props: ['movie'],
   data() {
@@ -115,69 +172,37 @@ export default {
     currentUserSubmittedMovie(movieId) {
       return this.$store.getters.currentUserSubmittedMovie(movieId);
     },
+    async addMovieToSeenList(movieId) {
+      this.hideMenu();
+      await this.$store.dispatch('addMovieToSeenList', movieId);
+      this.$toasted.show('Added to seen list!', toastSettings);
+    },
+    async removeMovieFromSeenList(movieId) {
+      this.hideMenu();
+      await this.$store.dispatch('removeMovieFromSeenList', movieId);
+      this.$toasted.show('Removed from seen list!', toastSettings);
+    },
     async addMovieToWatchList(movieId) {
       this.hideMenu();
       await this.$store.dispatch('addMovieToWatchList', movieId);
       // TODO: abstract these classes or make a component
-      this.$toasted.show('Added to watchlist!', {
-        duration: 2000,
-        position: 'bottom-center',
-        className: [
-          'shadow-lg',
-          'rounded',
-          'bg-green-100',
-          'py-2',
-          'text-green-900',
-          'font-semibold',
-        ],
-        containerClass: ['w-10/12', 'lg:w-max'],
-        action: {
-          class: ['text-green-900', 'underline'],
-          text: 'View',
-          // router navigation
-          push: {
-            name: 'watchlist',
-          },
-        },
-      });
+      this.$toasted.show('Added to watch list!', toastSettings);
     },
     async removeMovieFromWatchList(movieId) {
       this.hideMenu();
       await this.$store.dispatch('removeMovieFromWatchList', movieId);
-      this.$toasted.show('Removed from watchlist!', {
-        duration: 2000,
-        position: 'bottom-center',
-        className: [
-          'text-center',
-          'shadow-lg',
-          'rounded',
-          'bg-green-100',
-          'py-4',
-          'text-green-900',
-          'font-semibold',
-        ],
-        containerClass: ['w-10/12', 'lg:w-max'],
-      });
+      this.$toasted.show('Removed from watch list!', toastSettings);
     },
     movieExistsInWatchList(movieId) {
       return this.$store.getters.movieExistsInWatchList(movieId);
     },
+    movieExistsInSeenList(movieId) {
+      return this.$store.getters.movieExistsInSeenList(movieId);
+    },
     async deleteMovie(movieId) {
       this.hideMenu();
       await this.$store.dispatch('deleteMovie', movieId);
-      this.$toasted.show('Movie removed!', {
-        duration: 2000,
-        position: 'bottom-center',
-        className: [
-          'shadow-lg',
-          'rounded',
-          'bg-red-100',
-          'py-4',
-          'text-red-900',
-          'font-semibold',
-        ],
-        containerClass: ['w-10/12', 'lg:w-max'],
-      });
+      this.$toasted.show('Movie removed!', toastSettings);
     },
   },
   directives: {

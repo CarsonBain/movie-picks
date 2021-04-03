@@ -124,7 +124,14 @@
 
       <!-- Picks Listing -->
       <div class="mt-8">
-        <p v-if="!movies.length">There are currently no movies added :(</p>
+        <div
+          class="flex flex-col items-center mx-auto mt-16 max-w-lg"
+        v-if="!$store.getters.allPicksWithoutSeenMovies.length"
+        >
+          <p class="text-center text-xl font-semibold">
+            There are no current picks :(
+          </p>
+          </div>
         <div v-else>
           <div class="flex items-center space-x-4">
             <button
@@ -178,7 +185,7 @@
           </div> -->
           <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <MovieCard
-              v-for="movie in movies"
+              v-for="movie in $store.getters.allPicksWithoutSeenMovies"
               :movie="movie"
               :showImages="showImages"
               :key="movie.id"
@@ -245,7 +252,6 @@ export default {
       if (!query) {
         this.clearAddMovieForm();
       } else {
-        // TODO: REMOVE THIS API KEY!
         axios
           .get(
             `https://api.themoviedb.org/3/search/movie?api_key=d8b2294a5a84a590d5c0f1f53619130b&query=${query}`
@@ -285,14 +291,13 @@ export default {
       }
     },
     // TODO: this doesn't work yet
-    setActiveFilter(filterName) {
-      this.activeGenreFilter = filterName;
-      this.movies = this.movies.filter((movie) => {
-        return movie.genres.includes(filterName);
-      });
-    },
+    // setActiveFilter(filterName) {
+    //   this.activeGenreFilter = filterName;
+    //   this.movies = this.movies.filter((movie) => {
+    //     return movie.genres.includes(filterName);
+    //   });
+    // },
     selectMovie(movieId) {
-      // TODO: REMOVE THIS API KEY!
       axios
         .get(
           `https://api.themoviedb.org/3/movie/${movieId}?api_key=d8b2294a5a84a590d5c0f1f53619130b`

@@ -16,12 +16,15 @@
           v-if="showUserMenu"
           class="origin-top-right absolute right-0 mt-2 w-48 px-4 py-4 rounded-md shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-ring-5 z-10"
         >
-          <ul class="flex flex-col space-y-2">
+          <ul class="flex flex-col space-y-3">
             <li>
               <router-link to="/">All picks</router-link>
             </li>
             <li>
-              <router-link to="/watchlist">My watchlist</router-link>
+              <router-link to="/watchlist">My watch list</router-link>
+            </li>
+            <li>
+              <router-link to="/seenlist">My seen movies</router-link>
             </li>
             <li>
               <button type="button" class="text-red-300" @click="logout()">Logout</button>

@@ -22,6 +22,7 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch('getWatchList');
+    await this.$store.dispatch('getSeenList');
   },
 };
 </script>

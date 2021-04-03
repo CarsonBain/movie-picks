@@ -22,6 +22,7 @@ const auth = firebase.auth();
 const usersCollection = db.collection('users');
 const moviesCollection = db.collection('movies');
 const watchListsCollection = db.collection('watchlists');
+const seenListsCollection = db.collection('seenlists');
 
 // export utils/refs
-export { db, auth, usersCollection, moviesCollection, watchListsCollection };
+export { db, auth, usersCollection, moviesCollection, watchListsCollection, seenListsCollection };

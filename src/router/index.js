@@ -27,6 +27,14 @@ const routes = [
       requiresAuth: true
     }
   },
+  {
+    path: '/seenlist',
+    name: 'seenlist',
+    component: () => import(/* webpackChunkName: "seenList" */ '../views/SeenListPage.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
 ];
 
 const router = new VueRouter({
