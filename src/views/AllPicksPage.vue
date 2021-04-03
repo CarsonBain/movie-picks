@@ -158,7 +158,7 @@
           </div>
 
           <!-- Genre filtering -->
-          <div class="flex items-center space-x-3 py-4 mb-4 overflow-x-auto pl-8 md:pl-16">
+          <div class="flex items-center space-x-3 py-4 mb-4 overflow-x-auto pl-6 md:pl-16">
             <button
               type="button"
               @click="currentFilter = ''"
