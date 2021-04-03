@@ -1,6 +1,8 @@
 <template>
   <div class="bg-gray-800 rounded flex flex-col relative">
-    <div v-if="showImages">
+    <!-- Sometimes the api doesnt return a backdrop path -->
+    <!-- TODO: add a placeholder image -->
+    <div v-if="showImages && movie.backdropPath">
       <img
         class="rounded-t"
         :src="`https://image.tmdb.org/t/p/w780/${movie.backdropPath}`"
