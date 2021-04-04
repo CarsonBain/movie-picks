@@ -137,7 +137,7 @@
             <button
               type="button"
               @click="showImages = !showImages"
-              class="flex items-center space-x-1 md:text-sm text-xs p-2 text-gray-300 underline focus:outline-none focus:ring-1 rounded"
+              class="flex items-center space-x-1 md:text-sm text-xs py-2 text-gray-300 underline focus:outline-none focus:ring-1 rounded"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
