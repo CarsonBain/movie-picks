@@ -16,12 +16,12 @@
 
       <div class="flex flex-col">
         <span class="font-semibold md:text-lg">{{ movie.title }}</span>
-        <div class="flex items-center space-x-2">
+        <div class="flex items-center space-x-3">
           <span>{{ movie.year }}</span>
           <div class="flex items-center space-x-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4 text-gray-300"
+              class="h-5 w-5 text-gray-300"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -32,8 +32,46 @@
 
             <span>{{ movie.userRating }}</span>
           </div>
+          <button
+            v-if="movie.overview"
+            type="button"
+            @click="showSynopsis = !showSynopsis"
+            class="flex space-x-1 items-center text-sm focus:outline-none focus:ring-1 focus:ring-white rounded"
+          >
+            <span>Synopsis</span>
+
+            <svg
+              v-if="!showSynopsis"
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <svg
+              v-else
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
         </div>
       </div>
+      <p class="text-xs md:text-sm my-2 leading-normal" v-if="showSynopsis">
+        {{ movie.overview }}
+      </p>
       <div v-if="movie.genres" class="my-1">
         <span
           v-for="(genre, index) in movie.genres"
@@ -95,7 +133,10 @@ import MovieCardMenuDropdown from './MovieCardMenuDropdown.vue';
 export default {
   components: { MovieCardMenuDropdown },
   props: ['movie', 'showImages'],
-
-  methods: {},
+  data() {
+    return {
+      showSynopsis: false,
+    };
+  },
 };
 </script>

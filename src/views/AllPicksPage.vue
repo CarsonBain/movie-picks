@@ -220,6 +220,7 @@ export default {
         network: '',
         otherLink: '',
         tmdbId: '',
+        overview: '',
       },
     };
   },
@@ -302,6 +303,7 @@ export default {
             release_date,
             backdrop_path,
             poster_path,
+            overview,
             id,
           } = response.data;
           this.movie.title = title;
@@ -310,6 +312,7 @@ export default {
           this.movie.backdropPath = backdrop_path;
           this.movie.posterPath = poster_path;
           this.movie.tmdbId = id;
+          this.movie.overview = overview
         });
 
       this.movieQueryResults = '';
