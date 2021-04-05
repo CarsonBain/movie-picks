@@ -253,7 +253,7 @@ export default {
       } else {
         axios
           .get(
-            `https://api.themoviedb.org/3/search/movie?api_key=d8b2294a5a84a590d5c0f1f53619130b&query=${query}`
+            `https://api.themoviedb.org/3/search/movie?api_key=d8b2294a5a84a590d5c0f1f53619130b&query=${query}&include_adult=false`
           )
           .then(
             (response) =>
