@@ -165,7 +165,7 @@
               :class="[
                 currentFilter === '' ? 'bg-gray-200 text-gray-900' : '',
               ]"
-              class="border-gray-200 border rounded px-2 flex-shrink-0"
+              class="border-gray-200 border rounded px-2 flex-shrink-0 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-gray-800 focus:ring-white"
             >
               All
             </button>
