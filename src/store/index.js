@@ -199,7 +199,7 @@ const store = new Vuex.Store({
           network: movie.network,
           otherLink: movie.otherLink,
           submittedUserId: fb.auth.currentUser.uid,
-          submittedBy: state.user.userProfile.first_name,
+          submittedBy: `${state.user.userProfile.first_name} ${state.user.userProfile.last_name}`,
           overview: movie.overview,
           comments: 0,
           likes: 0,
