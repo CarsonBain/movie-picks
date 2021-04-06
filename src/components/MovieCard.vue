@@ -106,7 +106,7 @@
           </svg>
         </a>
       </div>
-      <div class="text-sm flex space-x-2 items-center mt-2">
+      <div class="text-sm flex space-x-2 items-center mt-3">
         <div class="flex items-center space-x-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -122,7 +122,7 @@
               d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <span>{{ movie.submittedBy }}</span>
+          <span class="text-xs">{{ movie.submittedBy }}</span>
         </div>
       </div>
     </div>

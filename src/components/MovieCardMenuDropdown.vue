@@ -6,8 +6,8 @@
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        fill="none"
         class="h-6 w-6 text-gray-50"
+        fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
       >
@@ -15,7 +15,7 @@
           stroke-linecap="round"
           stroke-linejoin="round"
           stroke-width="2"
-          d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+          d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
         />
       </svg>
     </button>
@@ -145,18 +145,18 @@
 import ClickOutside from 'vue-click-outside';
 
 const toastSettings = {
-        duration: 2000,
-        position: 'bottom-center',
-        className: [
-          'shadow-lg',
-          'rounded',
-          'bg-green-100',
-          'py-4',
-          'text-green-900',
-          'font-semibold',
-        ],
-        containerClass: ['w-10/12', 'lg:w-max'],
-      }
+  duration: 2000,
+  position: 'bottom-center',
+  className: [
+    'shadow-lg',
+    'rounded',
+    'bg-green-100',
+    'py-4',
+    'text-green-900',
+    'font-semibold',
+  ],
+  containerClass: ['w-10/12', 'lg:w-max'],
+};
 
 export default {
   props: ['movie'],
