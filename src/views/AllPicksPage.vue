@@ -158,14 +158,15 @@
           </div>
 
           <!-- Genre filtering -->
-          <div class="flex items-center space-x-3 py-4 mb-4 overflow-x-auto pl-6 md:pl-16">
+          <!-- TODO: figure out how to resolve margins for flex wrap -- maybe use grid -->
+          <div class="flex items-center py-4 mb-4 overflow-x-auto pl-6 md:pl-16 md:flex-wrap">
             <button
               type="button"
               @click="currentFilter = ''"
               :class="[
                 currentFilter === '' ? 'bg-gray-200 text-gray-900' : '',
               ]"
-              class="border-gray-200 border rounded px-2 flex-shrink-0 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-gray-800 focus:ring-white"
+              class="mt-3 border-gray-200 border rounded px-2 flex-shrink-0 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-gray-800 focus:ring-white"
             >
               All
             </button>
@@ -175,7 +176,7 @@
               :class="[
                 currentFilter === genre ? 'bg-gray-200 text-gray-900' : '',
               ]"
-              class="border-gray-200 border rounded px-2 flex-shrink-0 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-gray-800 focus:ring-white"
+              class="ml-3 mt-3 border-gray-200 border rounded px-2 flex-shrink-0 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-gray-800 focus:ring-white"
               v-for="(genre, index) in genreList"
               :key="index"
             >
