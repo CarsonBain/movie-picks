@@ -16,6 +16,7 @@ const store = new Vuex.Store({
     movies: [],
     watchList: [],
     seenList: [],
+    reviews: [],
   },
   getters: {
     movieExistsInWatchList: (state) => (movieId) => {
@@ -67,6 +68,9 @@ const store = new Vuex.Store({
     setSeenList(state, seenList) {
       state.seenList = seenList;
     },
+    setReviews(state, reviews) {
+      state.reviews = reviews;
+    }
   },
   actions: {
     async login({ dispatch }, form) {
@@ -240,11 +244,12 @@ const store = new Vuex.Store({
     //     alert(e)
     //   }
     // }
+    
   },
   modules: {},
 });
 
-// realtime firebase connection
+// realtime firebase connection all added movies
 fb.moviesCollection.orderBy('createdOn', 'desc').onSnapshot((snapshot) => {
   let moviesArray = [];
 
@@ -255,6 +260,20 @@ fb.moviesCollection.orderBy('createdOn', 'desc').onSnapshot((snapshot) => {
     moviesArray.push(movie);
   });
   store.commit('setMovies', moviesArray);
+});
+
+// TODO: maybe we don't need to have a real time connection for this.
+// realtime firebase connection reviews
+fb.reviewsCollection.orderBy('createdOn', 'desc').onSnapshot((snapshot) => {
+  let reviewsArray = [];
+
+  snapshot.forEach((doc) => {
+    let review = doc.data();
+    review.id = doc.id;
+
+    reviewsArray.push(review);
+  });
+  store.commit('setReviews', reviewsArray);
 });
 
 export default store;

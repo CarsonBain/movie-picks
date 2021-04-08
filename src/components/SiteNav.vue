@@ -7,7 +7,7 @@
     <div class="group relative"  v-click-outside="hideMenu">
       <button
         @click="showUserMenu = !showUserMenu"
-        class="bg-pink-200 font-semibold text-pink-900 h-8 w-8 rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-purple-400"
+        class="bg-green-100 font-semibold text-green-900 h-8 w-8 rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-purple-400"
       >
         {{ userInitials }}
       </button>

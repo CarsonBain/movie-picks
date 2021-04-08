@@ -106,7 +106,7 @@
           </svg>
         </a>
       </div>
-      <div class="text-sm flex space-x-2 items-center mt-3">
+      <div class="text-sm flex justify-between items-center mt-3">
         <div class="flex items-center space-x-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -124,17 +124,36 @@
           </svg>
           <span class="text-xs">{{ movie.submittedBy }}</span>
         </div>
+        <button type="button" @click="showReviewModal = true;" class="flex items-center space-x-1">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4 text-gray-300"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <span> {{ movie.review_count|| 0 }}</span>
+        </button>
       </div>
     </div>
+    <ReviewsModal  @close-modal="showReviewModal = false" v-if="showReviewModal" :movieId="movie.id"></ReviewsModal>
   </div>
 </template>
 <script>
 import MovieCardMenuDropdown from './MovieCardMenuDropdown.vue';
+import ReviewsModal from './ReviewsModal.vue';
 export default {
-  components: { MovieCardMenuDropdown },
-  props: ['movie', 'showImages'],
+  components: { MovieCardMenuDropdown, ReviewsModal },
+  props: ['movie', 
+    'showImages'],
   data() {
     return {
+      showReviewModal: false,
       showSynopsis: false,
     };
   },
