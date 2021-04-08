@@ -35,7 +35,7 @@
             :key="existingReview.id"
             class="border-b border-gray-500 py-6"
           >
-            <div class="text-xs flex items-center space-x-3 mb-2">
+            <div class="text-xs flex items-center mb-2 flex-wrap">
               <div class="flex items-center space-x-2">
                 <div>
                   <span>Review by </span
@@ -55,7 +55,7 @@
                   <span>{{ existingReview.rating }} </span>
                 </div>
               </div>
-              <span class="text-gray-300" v-if="existingReview.created_on">
+              <span class="text-gray-300 w-full mt-1 md:mt-0 md:ml-2 md:w-max" v-if="existingReview.created_on">
                 {{ convertDate(existingReview.created_on) }}
               </span>
             </div>
