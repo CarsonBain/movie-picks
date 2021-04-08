@@ -14,7 +14,7 @@
             >
             <input
               type="text"
-              class="bg-gray-800"
+              class="bg-gray-800 border-none rounded"
               id="movie-title"
               v-model="movie.title"
               placeholder="Movie title"
@@ -62,7 +62,7 @@
                 <label class="mb-2" for="movie-rating">Your rating</label>
                 <input
                   v-model.trim="movie.userRating"
-                  class="bg-gray-800"
+                  class="bg-gray-800 border-none rounded"
                   type="number"
                   min="1"
                   max="10"
@@ -73,7 +73,7 @@
               <div class="flex flex-col w-1/2">
                 <label class="mb-2" for="movie-network">Network</label>
                 <select
-                  class="bg-gray-800"
+                  class="bg-gray-800 border-none rounded"
                   v-model.trim="movie.network"
                   id="movie-network"
                   placeholder="8.7"
@@ -89,7 +89,7 @@
             <div class="flex flex-col" v-if="movie.network === 'other'">
               <label class="mb-2" for="movie-other-link">Link to stream</label>
               <input
-                class="bg-gray-800"
+                class="bg-gray-800 border-none rounded"
                 v-model.trim="movie.otherLink"
                 type="text"
                 id="movie-other-link"

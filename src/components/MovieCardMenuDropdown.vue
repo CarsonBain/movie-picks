@@ -162,7 +162,7 @@ export default {
   props: ['movie'],
   data() {
     return {
-      showMenu: false,
+      showMenu: false
     };
   },
   methods: {
