@@ -4,6 +4,8 @@
     <div class="text-base md:text-xl uppercase tracking-wider font-extrabold">
       <router-link to="/">Vincent's Picks</router-link>
     </div>
+    <div class="flex items-center space-x-5">
+     <router-link to="/all-picks">All picks</router-link>
     <div class="group relative"  v-click-outside="hideMenu">
       <button
         @click="showUserMenu = !showUserMenu"
@@ -18,9 +20,6 @@
         >
           <ul class="flex flex-col space-y-3">
             <li>
-              <router-link to="/">All picks</router-link>
-            </li>
-            <li>
               <router-link to="/watchlist">My watch list</router-link>
             </li>
             <li>
@@ -32,6 +31,7 @@
           </ul>
         </div>
       </transition>
+    </div>
     </div>
   </nav>
 </div>

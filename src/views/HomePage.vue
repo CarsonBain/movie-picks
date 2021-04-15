@@ -1,32 +1,29 @@
 <template>
-<!-- :style="{ backgroundImage: `url(https://image.tmdb.org/t/p/w780/${featuredPick.backdropPath})`}" -->
+  <!-- :style="{ backgroundImage: `url(https://image.tmdb.org/t/p/w780/${featuredPick.backdropPath})`}" -->
   <div class="mt-8 md:mt-12">
-      <div class="flex flex-col items-center space-y-4 px-6 md:px-16 ">
-    <h1 class="text-3xl md:text-4xl font-bold text-center">
-      Featured Pick
-    </h1>
-    <router-link
-          to="/all-picks"
-          class="text-gray-100 flex items-center space-x-1 border-b border-gray-200"
-          ><span>See all picks</span
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-4 w-4"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            />
-          </svg>
-        </router-link>
-      </div>
+    <div class="flex flex-col items-center space-y-4 px-6 md:px-16">
+      <h1 class="text-3xl md:text-4xl font-bold text-center">Featured Pick</h1>
+      <router-link
+        to="/all-picks"
+        class="text-gray-100 flex items-center space-x-1 border-b border-gray-200"
+        ><span>See all picks</span
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </router-link>
+    </div>
     <section class="mt-10">
       <!-- TODO: make featured pick component -->
       <div
-      
         class="px-6 md:px-16 flex justify-center items-center md:space-x-8 flex-wrap"
         v-if="featuredPick"
       >
@@ -40,7 +37,7 @@
         <div class="max-w-xs md:mt-0 w-full md:w-auto mt-6">
           <div class="mb-3">
             <div class="text-2xl font-bold mb-1">{{ featuredPick.title }}</div>
-            <div class="mb-2 flex items-center space-x-2 text-lg">
+            <div class="mb-2 flex items-center space-x-3 text-lg">
               <span>
                 {{ featuredPick.year }}
               </span>
@@ -58,6 +55,34 @@
                 </svg>
 
                 <span>{{ featuredPick.userRating }}</span>
+              </div>
+              <div
+                class="capitalize my-1"
+                v-if="featuredPick.network !== 'other'"
+              >
+                {{ featuredPick.network }}
+              </div>
+              <div class="my-1" v-else>
+                <a
+                  class="flex space-x-1 items-center"
+                  target="_blank"
+                  :href="featuredPick.otherLink"
+                  ><span>Link</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 text-gray-300"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    />
+                  </svg>
+                </a>
               </div>
             </div>
             <div class="grid gap-2 grid-flow-col auto-cols-max text-sm">
