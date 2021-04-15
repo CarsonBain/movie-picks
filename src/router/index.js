@@ -50,6 +50,10 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+  scrollBehavior () {
+    // Scroll to top on when changing routes
+    return { x: 0, y: 0 }
+  }
 });
 
 // Check the requiresAuth meta property on each route change
