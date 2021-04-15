@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import AllPicksPage from '@/views/AllPicksPage.vue';
+import HomePage from '@/views/HomePage.vue';
 import { auth } from '@/firebase.js';
 
 Vue.use(VueRouter);
@@ -8,7 +9,15 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "AllPicksPage",
+    name: "home",
+    component: HomePage,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/all-picks",
+    name: "all-picks-page",
     component: AllPicksPage,
     meta: {
       requiresAuth: true

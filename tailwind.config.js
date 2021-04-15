@@ -19,10 +19,16 @@ module.exports = {
       pink: colors.pink,
       green: colors.green
     },
-    extend: {},
+    extend: {
+      gridTemplateColumns: {
+        'feature-four-column': 'repeat(4, minmax(275px, max-content))'
+      }
+    },
   },
   variants: {
-    extend: {},
+    extend: {
+      padding: ['responsive', 'first', 'last']
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),
