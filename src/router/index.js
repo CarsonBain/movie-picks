@@ -21,6 +21,13 @@ const routes = [
     path: '/login',
     name: 'login',
     component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue'),
+    beforeEnter: (to, from, next) => {
+      if (auth.currentUser) {
+        next('/');
+      } else {
+        next();
+      }
+    },
   },
   {
     path: '/watchlist',

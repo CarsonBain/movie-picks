@@ -48,9 +48,9 @@ export default {
   },
   computed: {
     userInitials() {
-      const { first_name, last_name } = this.$store.state.user.userProfile;
-      if (first_name && last_name) {
-        return `${first_name.charAt(0).toUpperCase()}${last_name.charAt(0).toUpperCase()}`;
+      const { display_name } = this.$store.state.user.userProfile;
+      if (display_name) {
+        return display_name.charAt(0).toUpperCase();
       }
       // If for some reason first or last name not defined -- return V for Vincent ;)
       return 'V';

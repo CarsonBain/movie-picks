@@ -6,7 +6,7 @@
       <form
         v-if="$store.state.user.loggedIn"
         @submit.prevent="addMovie()"
-        class="flex flex-col items-start mb-8 px-6 md:px-16"
+        class="flex flex-col items-start px-6 md:px-16"
       >
         <div class="flex flex-col space-y-4 w-full md:w-1/2">
           <div class="flex flex-col w-full relative">
@@ -53,15 +53,11 @@
             <div class="flex items-center space-x-4 mb-3">
               <div class="flex flex-col w-1/2">
                 <label class="mb-2" for="movie-rating">Your rating</label>
-                <input
-                  v-model.trim="movie.userRating"
-                  class="bg-gray-800 border-none rounded"
-                  type="number"
-                  min="1"
-                  max="10"
-                  id="movie-rating"
-                  placeholder="Out of 10"
-                />
+                <select v-model="movie.userRating" class="bg-gray-800 border-none rounded">
+                  <option v-for="(number, index) in ratingScale" :key="index" :value="number">
+                    {{ number }}
+                  </option>
+                </select>
               </div>
               <div class="flex flex-col w-1/2">
                 <label class="mb-2" for="movie-network">Network</label>
@@ -112,7 +108,7 @@
       </form>
 
       <!-- Picks Listing -->
-      <div class="mt-8">
+      <div class="mt-6">
         <div
           class="flex flex-col items-center mx-auto mt-16 max-w-lg px-6 md:px-16"
           v-if="!$store.getters.allPicksWithoutSeenMovies(currentFilter).length"
@@ -146,12 +142,12 @@
 
           <!-- Genre filtering -->
           <!-- TODO: figure out how to resolve margins for flex wrap -- maybe use grid -->
-          <div class="flex items-center py-4 mb-4 overflow-x-auto pl-6 md:pl-16 md:flex-wrap">
+          <div class="flex gap-3 items-center py-4 mb-4 overflow-x-auto pl-6 md:pl-16 md:flex-wrap">
             <button
               type="button"
               @click="currentFilter = ''"
               :class="[currentFilter === '' ? 'bg-gray-200 text-gray-900' : '']"
-              class="mt-3 border-gray-200 border rounded px-2 flex-shrink-0 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-gray-800 focus:ring-white"
+              class="border-gray-200 border rounded px-2 flex-shrink-0 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-gray-800 focus:ring-white"
             >
               All
             </button>
@@ -159,7 +155,7 @@
               type="button"
               @click="currentFilter = genre"
               :class="[currentFilter === genre ? 'bg-gray-200 text-gray-900' : '']"
-              class="ml-3 mt-3 border-gray-200 border rounded px-2 flex-shrink-0 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-gray-800 focus:ring-white"
+              class="border-gray-200 border rounded px-2 flex-shrink-0 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-gray-800 focus:ring-white"
               v-for="(genre, index) in genreList"
               :key="index"
             >
@@ -194,6 +190,7 @@ export default {
       showRestOfForm: false,
       showImages: true,
       showMyPicks: true,
+      ratingScale: [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10],
       movie: {
         title: '',
         backdropPath: '',

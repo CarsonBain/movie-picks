@@ -20,9 +20,7 @@ const store = new Vuex.Store({
   },
   getters: {
     movieExistsInWatchList: (state) => (movieId) => {
-      const watchListIds = state.watchList.map(
-        (watchItem) => watchItem.movie_id
-      );
+      const watchListIds = state.watchList.map((watchItem) => watchItem.movie_id);
       return watchListIds.includes(movieId);
     },
     movieExistsInSeenList: (state) => (movieId) => {
@@ -37,17 +35,13 @@ const store = new Vuex.Store({
       return false;
     },
     allPicksWithoutSeenMovies: (state, getters) => (filter = null) => {
-      let allPicksWithoutSeenMovies = state.movies.filter(
-        (movie) => !getters.movieExistsInSeenList(movie.id)
-      );
+      let allPicksWithoutSeenMovies = state.movies.filter((movie) => !getters.movieExistsInSeenList(movie.id));
       if (filter) {
-        allPicksWithoutSeenMovies = allPicksWithoutSeenMovies.filter(
-          (movie) => {
-            return movie.genres.some((genre) => {
-              return genre.name === filter;
-            });
-          }
-        );
+        allPicksWithoutSeenMovies = allPicksWithoutSeenMovies.filter((movie) => {
+          return movie.genres.some((genre) => {
+            return genre.name === filter;
+          });
+        });
       }
       return allPicksWithoutSeenMovies;
     },
@@ -70,21 +64,34 @@ const store = new Vuex.Store({
     },
     setReviews(state, reviews) {
       state.reviews = reviews;
-    }
+    },
   },
   actions: {
-    async login({ dispatch }, form) {
-      // sign user in
+    async registerOrSignInWithGoogle({ dispatch }) {
       try {
-        const { user } = await fb.auth.signInWithEmailAndPassword(
-          form.email,
-          form.password
-        );
-        dispatch('fetchUserProfile', user);
+        const provider = new fb.firebase.auth.GoogleAuthProvider();
+        return await fb.auth
+          .signInWithPopup(provider)
+          .then(async (result) => {
+            await dispatch('createNewUserProfile', result.user);
+            await dispatch('fetchUserProfile', result.user);
+          })
+          .then(() => true);
       } catch (e) {
-        // TODO: better error handling
         alert(e);
+        return false;
       }
+    },
+    async createNewUserProfile(_, user) {
+      const userProfile = await fb.usersCollection.doc(user.uid).get();
+      // If a user profile for the user already exists, return early
+      if (userProfile.exists) {
+        return true;
+      }
+      await fb.usersCollection.doc(user.uid).set({
+        // If for some reason display name doesn't exist, generate random user name
+        display_name: user.displayName ? user.displayName : `user${Math.random().toString().slice(2, 9)}`,
+      });
     },
     async fetchUserProfile({ commit }, user) {
       // fetch user profile
@@ -203,7 +210,7 @@ const store = new Vuex.Store({
           network: movie.network,
           otherLink: movie.otherLink,
           submittedUserId: fb.auth.currentUser.uid,
-          submittedBy: `${state.user.userProfile.first_name} ${state.user.userProfile.last_name}`,
+          submittedBy: state.user.userProfile.display_name,
           overview: movie.overview,
           comments: 0,
           likes: 0,
@@ -244,7 +251,6 @@ const store = new Vuex.Store({
     //     alert(e)
     //   }
     // }
-    
   },
   modules: {},
 });
