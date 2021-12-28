@@ -89,7 +89,8 @@ const store = new Vuex.Store({
         return true;
       }
       await fb.usersCollection.doc(user.uid).set({
-        display_name: user.displayName,
+        // If for some reason display name doesn't exist, generate random user name
+        display_name: user.displayName ? user.displayName : `user${Math.random().toString().slice(2, 9)}`,
       });
     },
     async fetchUserProfile({ commit }, user) {
