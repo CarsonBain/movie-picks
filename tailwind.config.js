@@ -1,9 +1,6 @@
-const colors = require('tailwindcss/colors')
+const colors = require('tailwindcss/colors');
 module.exports = {
-  purge: [
-    './public/**/*.html',
-    './src/**/*.vue',
-  ],
+  purge: ['./public/**/*.html', './src/**/*.vue'],
   important: true,
   darkMode: false, // or 'media' or 'class'
   theme: {
@@ -17,20 +14,18 @@ module.exports = {
       red: colors.rose,
       yellow: colors.amber,
       pink: colors.pink,
-      green: colors.green
+      green: colors.green,
     },
     extend: {
       gridTemplateColumns: {
-        'feature-four-column': 'repeat(4, minmax(275px, max-content))'
-      }
+        'feature-four-column': 'repeat(4, minmax(270px, max-content))',
+      },
     },
   },
   variants: {
     extend: {
-      padding: ['responsive', 'first', 'last']
+      padding: ['responsive', 'first', 'last'],
     },
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-  ],
-}
+  plugins: [require('@tailwindcss/forms')],
+};
