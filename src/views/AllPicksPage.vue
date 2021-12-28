@@ -4,14 +4,13 @@
     <section class="mt-6">
       <!-- Pick Submission Form -->
       <form
+        v-if="$store.state.user.loggedIn"
         @submit.prevent="addMovie()"
-        class="flex flex-col items-start mb-8 px-6 md:px-16 "
+        class="flex flex-col items-start mb-8 px-6 md:px-16"
       >
         <div class="flex flex-col space-y-4 w-full md:w-1/2">
           <div class="flex flex-col w-full relative">
-            <label for="movie-title" class="mb-2"
-              >Search for a movie to add</label
-            >
+            <label for="movie-title" class="mb-2">Search for a movie to add</label>
             <input
               type="text"
               class="bg-gray-800 border-none rounded"
@@ -39,14 +38,8 @@
               </div>
             </div>
           </div>
-          <div
-            v-if="movie.year || movie.genres"
-            class="flex items-center space-x-3"
-          >
-            <div
-              class="font-semibold bg-gray-300 text-gray-900 px-1 rounded"
-              v-if="movie.year"
-            >
+          <div v-if="movie.year || movie.genres" class="flex items-center space-x-3">
+            <div class="font-semibold bg-gray-300 text-gray-900 px-1 rounded" v-if="movie.year">
               {{ movie.year }}
             </div>
             <div v-if="movie.genres">
@@ -110,11 +103,7 @@
               >
                 Add movie
               </button>
-              <button
-                @click="clearAddMovieForm()"
-                type="button"
-                class="text-gray-300 font-semibold px-4 py-2"
-              >
+              <button @click="clearAddMovieForm()" type="button" class="text-gray-300 font-semibold px-4 py-2">
                 Close form
               </button>
             </div>
@@ -125,13 +114,11 @@
       <!-- Picks Listing -->
       <div class="mt-8">
         <div
-          class="flex flex-col items-center mx-auto mt-16 max-w-lg px-6 md:px-16 "
-        v-if="!$store.getters.allPicksWithoutSeenMovies(currentFilter).length"
+          class="flex flex-col items-center mx-auto mt-16 max-w-lg px-6 md:px-16"
+          v-if="!$store.getters.allPicksWithoutSeenMovies(currentFilter).length"
         >
-          <p class="text-center text-xl font-semibold">
-            There are no current picks :(
-          </p>
-          </div>
+          <p class="text-center text-xl font-semibold">There are no current picks :(</p>
+        </div>
         <div v-else>
           <div class="flex items-center space-x-4 px-6 md:px-16">
             <button
@@ -163,9 +150,7 @@
             <button
               type="button"
               @click="currentFilter = ''"
-              :class="[
-                currentFilter === '' ? 'bg-gray-200 text-gray-900' : '',
-              ]"
+              :class="[currentFilter === '' ? 'bg-gray-200 text-gray-900' : '']"
               class="mt-3 border-gray-200 border rounded px-2 flex-shrink-0 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-gray-800 focus:ring-white"
             >
               All
@@ -173,9 +158,7 @@
             <button
               type="button"
               @click="currentFilter = genre"
-              :class="[
-                currentFilter === genre ? 'bg-gray-200 text-gray-900' : '',
-              ]"
+              :class="[currentFilter === genre ? 'bg-gray-200 text-gray-900' : '']"
               class="ml-3 mt-3 border-gray-200 border rounded px-2 flex-shrink-0 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-offset-gray-800 focus:ring-white"
               v-for="(genre, index) in genreList"
               :key="index"
@@ -231,9 +214,9 @@ export default {
       movies: (state) => state.movies,
     }),
     canSubmit() {
-      const choseOtherNetwork = this.movie.network === 'other'
+      const choseOtherNetwork = this.movie.network === 'other';
       if (choseOtherNetwork) {
-        return this.movie.title && this.movie.userRating && this.movie.network && this.movie.otherLink
+        return this.movie.title && this.movie.userRating && this.movie.network && this.movie.otherLink;
       }
       return this.movie.title && this.movie.userRating && this.movie.network;
     },
@@ -256,10 +239,7 @@ export default {
           .get(
             `https://api.themoviedb.org/3/search/movie?api_key=d8b2294a5a84a590d5c0f1f53619130b&query=${query}&include_adult=false`
           )
-          .then(
-            (response) =>
-              (this.movieQueryResults = response.data.results.slice(0, 5))
-          );
+          .then((response) => (this.movieQueryResults = response.data.results.slice(0, 5)));
       }
     },
     clearAddMovieForm() {
@@ -278,11 +258,7 @@ export default {
       if (!this.canSubmit) {
         return;
       }
-      if (
-        this.movies.some(
-          (addedMovie) => addedMovie.tmdbId === this.movie.tmdbId
-        )
-      ) {
+      if (this.movies.some((addedMovie) => addedMovie.tmdbId === this.movie.tmdbId)) {
         alert('This movie has already been added');
         this.clearAddMovieForm();
       } else {
@@ -290,30 +266,19 @@ export default {
         this.clearAddMovieForm();
       }
     },
-   
+
     selectMovie(movieId) {
       axios
-        .get(
-          `https://api.themoviedb.org/3/movie/${movieId}?api_key=d8b2294a5a84a590d5c0f1f53619130b`
-        )
+        .get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=d8b2294a5a84a590d5c0f1f53619130b`)
         .then((response) => {
-          console.log(response.data);
-          const {
-            title,
-            genres,
-            release_date,
-            backdrop_path,
-            poster_path,
-            overview,
-            id,
-          } = response.data;
+          const { title, genres, release_date, backdrop_path, poster_path, overview, id } = response.data;
           this.movie.title = title;
           this.movie.genres = genres;
           this.movie.year = new Date(release_date).getFullYear();
           this.movie.backdropPath = backdrop_path;
           this.movie.posterPath = poster_path;
           this.movie.tmdbId = id;
-          this.movie.overview = overview
+          this.movie.overview = overview;
         });
 
       this.movieQueryResults = '';

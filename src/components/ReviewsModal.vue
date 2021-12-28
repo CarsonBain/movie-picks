@@ -85,10 +85,14 @@
             </div>
           </div>
         </div>
-        <div class="text-xl font-bold text-center my-4" v-else>
+        <div class="flex flex-col items-center" v-else>
+        <div class="text-xl font-bold text-center my-4">
           Be the first person to review this pick!
         </div>
+        <div v-if="!$store.state.user.loggedIn"><router-link class="underline" to="/login">Log in</router-link> to write a review</div>
+        </div>
         <form
+          v-if="$store.state.user.loggedIn"
           @submit.prevent="addReview()"
           class="flex flex-col items-start mt-8"
         >
@@ -203,7 +207,10 @@ export default {
       this.$emit('close-modal');
     },
     currentUserSubmittedReview(submittedUserId) {
-      return submittedUserId === auth.currentUser.uid;
+      if (this.$store.state.user.loggedIn) {
+        return submittedUserId === auth.currentUser.uid;
+      }
+      return false;
     },
   },
   async mounted() {

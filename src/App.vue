@@ -1,7 +1,7 @@
 <template>
   <div class="h-full min-h-screen bg-gray-900 text-gray-50" id="app">
     <div class="pb-8 md:pb-16 h-full">
-      <SiteNav v-if="loggedIn"></SiteNav>
+      <SiteNav></SiteNav>
       <div class="max-w-screen-xl mx-auto">
         <router-view />
       </div>

@@ -10,7 +10,7 @@
       />
     </div>
     <div class="p-6 relative">
-      <div class="absolute right-4 -top-4">
+      <div v-if="$store.state.user.loggedIn" class="absolute right-4 -top-4">
         <MovieCardMenuDropdown :movie="movie"> </MovieCardMenuDropdown>
       </div>
 
@@ -53,13 +53,7 @@
                 clip-rule="evenodd"
               />
             </svg>
-            <svg
-              v-else
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
+            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
               <path
                 fill-rule="evenodd"
                 d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
@@ -73,10 +67,7 @@
         {{ movie.overview }}
       </p>
       <div v-if="movie.genres" class="my-1">
-        <span
-          v-for="(genre, index) in movie.genres"
-          :key="genre.id"
-          class="text-sm text-gray-300"
+        <span v-for="(genre, index) in movie.genres" :key="genre.id" class="text-sm text-gray-300"
           ><span>{{ genre.name }}</span
           ><span v-if="index + 1 < movie.genres.length">, </span></span
         >
@@ -85,10 +76,7 @@
         {{ movie.network }}
       </div>
       <div class="mt-1 text-sm" v-else>
-        <a
-          class="flex space-x-1 items-center"
-          target="_blank"
-          :href="movie.otherLink"
+        <a class="flex space-x-1 items-center" target="_blank" :href="movie.otherLink"
           ><span>Link</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -124,24 +112,19 @@
           </svg>
           <span class="text-xs">{{ movie.submittedBy }}</span>
         </div>
-        <button type="button" @click="showReviewModal = true;" class="flex items-center space-x-1">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-4 w-4 text-gray-300"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
+        <button type="button" @click="showReviewModal = true" class="flex items-center space-x-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-300" viewBox="0 0 20 20" fill="currentColor">
             <path
               fill-rule="evenodd"
               d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z"
               clip-rule="evenodd"
             />
           </svg>
-          <span> {{ movie.review_count|| 0 }}</span>
+          <span> {{ movie.review_count || 0 }}</span>
         </button>
       </div>
     </div>
-    <ReviewsModal  @close-modal="showReviewModal = false" v-if="showReviewModal" :movieId="movie.id"></ReviewsModal>
+    <ReviewsModal @close-modal="showReviewModal = false" v-if="showReviewModal" :movieId="movie.id"></ReviewsModal>
   </div>
 </template>
 <script>
@@ -149,8 +132,7 @@ import MovieCardMenuDropdown from './MovieCardMenuDropdown.vue';
 import ReviewsModal from './ReviewsModal.vue';
 export default {
   components: { MovieCardMenuDropdown, ReviewsModal },
-  props: ['movie', 
-    'showImages'],
+  props: ['movie', 'showImages'],
   data() {
     return {
       showReviewModal: false,
