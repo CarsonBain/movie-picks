@@ -114,7 +114,7 @@
                 class="bg-gray-800 border-none rounded"
               >
                 <option
-                  v-for="(number, index) in 10"
+                  v-for="(number, index) in ratingScale"
                   :key="index"
                   :value="number"
                 >
@@ -156,6 +156,7 @@ export default {
         content: '',
         user_rating: '',
       },
+      ratingScale: [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10]
     };
   },
   computed: {
@@ -178,7 +179,7 @@ export default {
         rating: this.review.user_rating,
         movie_id: this.movieId,
         user_id: auth.currentUser.uid,
-        user_name: `${this.$store.state.user.userProfile.first_name} ${this.$store.state.user.userProfile.last_name}`,
+        user_name: this.$store.state.user.userProfile.display_name,
       });
 
       // TODO: is there a better way to get this review and add it?
